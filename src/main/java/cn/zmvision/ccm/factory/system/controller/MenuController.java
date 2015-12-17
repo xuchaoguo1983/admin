@@ -51,7 +51,8 @@ public class MenuController {
 		String pid = menu.getPid();
 		if (StringUtils.isEmpty(pid)) {
 			menu.setPid("#");
-		} else if (menuService.queryMenuById(pid) == null) {
+		}
+		if (!pid.equals("#") && menuService.queryMenuById(pid) == null) {
 			return new JsonResult(Message.MENU_PARENT_NOT_EXIST);
 		}
 

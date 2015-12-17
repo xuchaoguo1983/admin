@@ -110,7 +110,7 @@
 		<!-- END LOGIN FORM -->
 
 	</div>
-	<div class="copyright">2014 © 卓目科技.</div>
+	<div class="copyright">2015 © 卓目科技.</div>
 	<!-- END LOGIN -->
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	<!-- BEGIN CORE PLUGINS -->

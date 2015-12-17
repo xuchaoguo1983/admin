@@ -18,7 +18,7 @@ var DictPage = function() {
 						codeGrid.reload();
 				});
 	};
-	var handleDataTable = function() {
+	var handleDictDataTable = function() {
 		mapGrid = Helper.initDataTable($("#dictTable"), "system/dict/map/page",
 				function(grid, action, row) {
 					switch (action) {
@@ -29,34 +29,7 @@ var DictPage = function() {
 						});
 
 						if (codeGrid == null)
-							codeGrid = Helper.initDataTable(
-									$("#dictCodeTable"),
-									"system/dict/code/page", function(grid,
-											action, row) {
-										switch (action) {
-										case 'edit'://编辑字典项
-											var modal = $("#dictCodeModel");
-											$("form", modal).autofill(row);
-											modal.modal('show');
-											break;
-										case 'remove'://删除字典项
-											bootbox.confirm("确定删除么？", function(result) {
-												if (!result)
-													return;
-												$.post("system/dict/code/delete/" + row.id,
-													function(res) {
-														if (res.code != 0) {
-															Metronic.alert({
-																message : res.message
-															});
-														} else {
-															codeGrid.reload();
-														}
-													});
-											});
-											break;
-										}
-									});
+							handleDictCodeDataTable();
 						else
 							codeGrid.reload();
 
@@ -88,10 +61,39 @@ var DictPage = function() {
 				});
 	};
 
+	var handleDictCodeDataTable = function() {
+		codeGrid = Helper.initDataTable($("#dictCodeTable"),
+				"system/dict/code/page", function(grid, action, row) {
+					switch (action) {
+					case 'edit':// 编辑字典项
+						var modal = $("#dictCodeModel");
+						$("form", modal).autofill(row);
+						modal.modal('show');
+						break;
+					case 'remove':// 删除字典项
+						bootbox.confirm("确定删除么？", function(result) {
+							if (!result)
+								return;
+							$.post("system/dict/code/delete/" + row.id,
+									function(res) {
+										if (res.code != 0) {
+											Metronic.alert({
+												message : res.message
+											});
+										} else {
+											codeGrid.reload();
+										}
+									});
+						});
+						break;
+					}
+				});
+	};
+
 	return {
 		// main function to initiate the module
 		init : function() {
-			handleDataTable();
+			handleDictDataTable();
 			handleModal();
 		}
 	};
