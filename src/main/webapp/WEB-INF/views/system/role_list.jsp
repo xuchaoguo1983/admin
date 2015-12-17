@@ -36,8 +36,10 @@
 										placeholder="角色名称">
 								</div>
 								<div class="form-group">
-									<label for="status">状态</label>
-									
+									<label for="status">状态</label> <select name="status"
+										class="form-control form-filter" data-codemap="USER_STATUS">
+
+									</select>
 								</div>
 								<button type="button" class="btn btn-primary filter-submit">查询</button>
 								<button type="button" class="btn btn-default filter-cancel">重置</button>
@@ -48,7 +50,7 @@
 							<thead>
 								<tr role="row" class="heading">
 									<th data-name="name" data-order="asc" class="sortable">角色名称</th>
-									<th data-name="status" class="sortable" >状态</th>
+									<th data-name="status" data-codemap="USER_STATUS" class="sortable">状态</th>
 									<th data-name="description" class="sortable">角色说明</th>
 									<th data-action="edit,remove" width="10%">操作</th>
 								</tr>
@@ -62,7 +64,7 @@
 			<!-- End: life time stats -->
 		</div>
 	</div>
-	
+
 	<!-- 菜单信息 -->
 	<div class="modal fade" id="roleModel" tabindex="-1" role="basic"
 		aria-hidden="true">
@@ -77,11 +79,13 @@
 					<div class="alertContainer"></div>
 					<form class="form-horizontal" role="form">
 						<div class="form-body">
+							<input type="text" name="id" style="display: none"/>
+						
 							<div class="form-group">
 								<label class="col-md-3 control-label">角色名称</label>
 								<div class="col-md-9">
 									<div class="input-icon right">
-										<i class="fa"></i> <input type="text" class="form-control" 
+										<i class="fa"></i> <input type="text" class="form-control"
 											placeholder="角色名称" name="name" required>
 									</div>
 								</div>
@@ -90,7 +94,9 @@
 								<label class="col-md-3 control-label">角色状态</label>
 								<div class="col-md-9">
 									<div class="input-icon right">
-										<i class="fa"></i>
+										<i class="fa"></i> <select name="status" class="form-control"
+											data-codemap="USER_STATUS">
+										</select>
 									</div>
 								</div>
 							</div>
@@ -103,7 +109,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="form-group">
 								<label class="col-md-3 control-label">关联菜单</label>
 								<div class="col-md-9">
@@ -112,7 +118,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 						</div>
 					</form>
 				</div>
@@ -125,9 +131,8 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
-	
-	<!-- END PAGE CONTENT-->
-	</content>
+
+	<!-- END PAGE CONTENT--> </content>
 
 	<content tag="footer"> <script
 		src="static/pages/scripts/system/role.js" type="text/javascript"></script>

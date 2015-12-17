@@ -54,6 +54,16 @@ var App = function() {
 		        }
 		    }
 		}, '.modal');
+		
+		// 自动绑定字典数据
+		var codemaps = [];
+		$(".page-content [data-codemap]").each(function() {
+			var codemap = $(this).attr("data-codemap");
+			if ($.inArray(codemap, codemaps) == -1)
+				codemaps.push(codemap);
+		});
+		
+		Helper.initCodeMap(codemaps);
 	};
 
 	var handleMenuInit = function() {

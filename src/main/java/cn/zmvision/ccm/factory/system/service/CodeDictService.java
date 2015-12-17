@@ -46,7 +46,7 @@ public class CodeDictService {
 		return codeMapMapper.deleteByPrimaryKey(id) > 0;
 	}
 
-	public PageList<CodeItem> queryCodeItemListByMap(CodeItemExample example,
+	public PageList<CodeItem> queryCodeItemListByPage(CodeItemExample example,
 			PageBounds pageBounds) {
 		return codeItemMapper.selectByExample(example, pageBounds);
 	}

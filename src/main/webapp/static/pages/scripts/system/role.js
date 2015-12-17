@@ -3,7 +3,7 @@
  */
 var RolePage = function() {
 	var grid = null;
-
+	
 	var handleModal = function() {
 		Helper.initModal("#roleModel", 'system/role/save', null, function() {
 			if (grid)

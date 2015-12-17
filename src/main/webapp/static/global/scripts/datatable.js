@@ -10,6 +10,7 @@ var Datatable = function() {
     var tableWrapper; // actual table wrapper jquery object
     var tableInitialized = false;
     var ajaxParams = {}; // set filter mode
+    var codeMapCols = {};// codemap columns
     var the;
 
     var countSelectedRecords = function() {
@@ -132,7 +133,17 @@ var Datatable = function() {
                             }
 
                             Metronic.unblockUI(tableContainer);
-
+                            // set codemap data to src data
+                            for (var code in the.codeMapCols)
+                            {
+                            	var codemap = the.codeMapCols[code];
+                            	var newColName = codemap + '@' + code;
+                            	for(var i=0;i<res.data.length;i++){
+                            		var rowdata = res.data[i];
+                                	rowdata[newColName] = Helper.getCodeData(codemap, rowdata[code]);
+                            	}
+                            }
+                                                                                    
                             return res.data;
                         },
                         "error": function() { // handle general connection errors
@@ -175,11 +186,24 @@ var Datatable = function() {
             var columnDefs = [];
 			var orders = [];
 			var actions = [];
-			$("th", table).each(function() {
+			
+			the.codeMapCols = {};
+			$ ("th", table).each(function() {
 				if ($(this).is("[data-name]")) {
 					var col = {};
 					col.targets = $(this).index();
-					col.data = $(this).attr("data-name");
+
+					var colName = $(this).attr("data-name");
+					//check if codemap
+					if ($(this).is("[data-codemap]")) {
+						var codemap = $(this).attr("data-codemap");
+						//约定用@组装一个新的字段名
+						col.data = codemap + '@' + colName;
+						the.codeMapCols[colName] = codemap;
+					} else {
+						col.data = colName;
+					}
+					
 					col.bSortable = $(this).is(".sortable");
 					columnDefs.push(col);
 				} else if ($(this).is('[data-action]')) {

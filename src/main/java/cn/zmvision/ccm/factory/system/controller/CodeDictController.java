@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.zmvision.ccm.factory.base.bo.JsonResult;
@@ -21,6 +22,8 @@ import cn.zmvision.ccm.factory.system.dao.model.CodeItemExample.Criteria;
 import cn.zmvision.ccm.factory.system.dao.model.CodeMap;
 import cn.zmvision.ccm.factory.system.service.CodeDictService;
 
+import com.github.miemiedev.mybatis.paginator.domain.Order;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Controller
@@ -58,10 +61,24 @@ public class CodeDictController {
 	@RequestMapping(value = "/code/page", method = RequestMethod.POST)
 	@ResponseBody
 	public PageResult queryCodeItemByPage(CodeItemQueryInput input) {
-		PageList<CodeItem> list = codeDictService.queryCodeItemListByMap(
+		PageList<CodeItem> list = codeDictService.queryCodeItemListByPage(
 				input.getExample(), input.getPageBounds());
 
 		return new PageResult(input, list);
+	}
+
+	@RequestMapping(value = "/code/map")
+	@ResponseBody
+	public JsonResult queryCodeItemByMap(
+			@RequestParam(value = "list") List<String> list) {
+		CodeItemExample example = new CodeItemExample();
+		example.createCriteria().andCodemapIn(list);
+
+		PageBounds pageBounds = new PageBounds();
+		pageBounds.setOrders(Order.formString("codemap.asc, sort.asc"));
+
+		return new JsonResult(codeDictService.queryCodeItemListByPage(example,
+				pageBounds));
 	}
 
 	@RequestMapping(value = "/code/save")
