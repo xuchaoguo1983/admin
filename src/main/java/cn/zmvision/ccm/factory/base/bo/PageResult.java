@@ -1,6 +1,7 @@
 package cn.zmvision.ccm.factory.base.bo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 
 @SuppressWarnings("serial")
 /**
@@ -15,7 +16,12 @@ public class PageResult extends JsonResult {
 
 	public <T> PageResult(PageMeta pageMeta, PageList<T> list) {
 		super(list);
-		recordsTotal = list.getPaginator().getTotalCount();
+		Paginator paginator = list.getPaginator();
+		if (paginator != null) {
+			recordsTotal = paginator.getTotalCount();
+		} else {
+			recordsTotal = list.size();
+		}
 		recordsFiltered = recordsTotal;
 		draw = pageMeta.getDraw();
 	}

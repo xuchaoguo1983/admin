@@ -1,5 +1,5 @@
 /**
- * 菜单
+ * 菜单管理
  */
 var MenuPage = function() {
 	var grid = null;

@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 
 import cn.zmvision.ccm.factory.Constants;
 import cn.zmvision.ccm.factory.system.dao.mapping.RoleMapper;
+import cn.zmvision.ccm.factory.system.dao.mapping.RoleMenuMapper;
 import cn.zmvision.ccm.factory.system.dao.mapping.UserRoleMapper;
 import cn.zmvision.ccm.factory.system.dao.model.Role;
 import cn.zmvision.ccm.factory.system.dao.model.RoleExample;
+import cn.zmvision.ccm.factory.system.dao.model.RoleMenuExample;
+import cn.zmvision.ccm.factory.system.dao.model.RoleMenuKey;
 import cn.zmvision.ccm.factory.system.dao.model.UserRoleExample;
 import cn.zmvision.ccm.factory.system.dao.model.UserRoleKey;
 
@@ -28,6 +31,8 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 public class RoleService {
 	@Resource
 	RoleMapper roleMapper;
+	@Resource
+	RoleMenuMapper roleMenuMapper;
 	@Resource
 	UserRoleMapper userRoleMapper;
 
@@ -61,17 +66,49 @@ public class RoleService {
 		return roleMapper.selectByExample(example, pageBounds);
 	}
 
+	public List<RoleMenuKey> getMenuListByRoleId(Integer id) {
+		RoleMenuExample example = new RoleMenuExample();
+		example.createCriteria().andRoleIdEqualTo(id);
+		return roleMenuMapper.selectByExample(example);
+	}
+
 	public Role queryRoleById(Integer id) {
 		return roleMapper.selectByPrimaryKey(id);
 	}
 
-	public boolean saveRole(Role record) {
+	public boolean saveRole(Role record, List<String> menuIds) {
+		boolean result = false;
 		if (record.getId() == null)
-			return roleMapper.insert(record) > 0;
-		return roleMapper.updateByPrimaryKey(record) > 0;
+			result = roleMapper.insert(record) > 0;
+		else
+			result = roleMapper.updateByPrimaryKey(record) > 0;
+		if (result && menuIds != null) {
+			// 先删除再重建
+			RoleMenuExample example = new RoleMenuExample();
+			example.createCriteria().andRoleIdEqualTo(record.getId());
+			roleMenuMapper.deleteByExample(example);
+
+			if (menuIds.size() > 0) {
+				for (String menuId : menuIds) {
+					RoleMenuKey key = new RoleMenuKey();
+					key.setMenuId(menuId);
+					key.setRoleId(record.getId());
+					roleMenuMapper.insert(key);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public boolean deleteRoleById(Integer id) {
-		return roleMapper.deleteByPrimaryKey(id) > 0;
+		if (roleMapper.deleteByPrimaryKey(id) > 0) {
+			RoleMenuExample example = new RoleMenuExample();
+			example.createCriteria().andRoleIdEqualTo(id);
+			roleMenuMapper.deleteByExample(example);
+			return true;
+		}
+
+		return false;
 	}
 }

@@ -11,11 +11,15 @@ public class User implements Serializable {
 
     private String password;
 
-    private Integer state;
+    private String contact;
 
-    private String createTime;
+    private String email;
 
-    private Integer level;
+    private String description;
+
+    private Integer status;
+
+    private String createtime;
 
     private static final long serialVersionUID = 1L;
 
@@ -51,27 +55,43 @@ public class User implements Serializable {
         this.password = password == null ? null : password.trim();
     }
 
-    public Integer getState() {
-        return state;
+    public String getContact() {
+        return contact;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setContact(String contact) {
+        this.contact = contact == null ? null : contact.trim();
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
     }
 
-    public Integer getLevel() {
-        return level;
+    public String getDescription() {
+        return description;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
     }
 }

@@ -37,7 +37,7 @@ public class MenuBuilder {
 		}
 	}
 
-	public static String build(List<Menu> menuList, String basePath) {
+	public static String build(List<Menu> menuList) {
 		if (menuList == null || menuList.size() == 0)
 			return null;
 
@@ -72,26 +72,23 @@ public class MenuBuilder {
 		for (Iterator<MenuStrut> it = menuMap.values().iterator(); it.hasNext();) {
 			MenuStrut ms = it.next();
 
-			sb.append(build(ms, basePath));
+			sb.append(build(ms));
 		}
 
 		return sb.toString();
 	}
 
-	private static String build(MenuStrut ms, String basePath) {
+	private static String build(MenuStrut ms) {
 		StringBuilder sb = new StringBuilder();
 		Menu menu = ms.getMenu();
 		List<MenuStrut> subMenus = ms.getSubMenus();
 
 		sb.append("<li>");
 		if (subMenus.size() == 0) {
-			sb.append(String.format("<a href=\"%s%s\">", basePath, menu.getUrl()));
+			sb.append(String.format("<a href=\"%s\">", menu.getUrl()));
 			if (!StringUtils.isEmpty(menu.getIcon()))
 				sb.append(String.format("<i class=\"%s\"></i>", menu.getIcon()));
-			if (!StringUtils.isEmpty(menu.getPid()))
-				sb.append(menu.getName());
-			else
-				sb.append(String.format("<span class=\"title\">%s</span>",
+			sb.append(String.format("<span class=\"title\">%s</span>",
 						menu.getName()));
 			sb.append("</a>");
 		} else {
@@ -106,7 +103,7 @@ public class MenuBuilder {
 			sb.append("<ul class=\"sub-menu\">");
 
 			for (MenuStrut sms : subMenus)
-				sb.append(build(sms, basePath));
+				sb.append(build(sms));
 
 			sb.append("</ul>");
 		}

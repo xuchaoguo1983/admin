@@ -6,9 +6,11 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="contact" property="contact" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, username, password, state, create_time, level
+    id, name, username, password, contact, email, description, status, createtime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.zmvision.ccm.factory.system.dao.model.UserExample" >
     select
@@ -101,20 +103,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.zmvision.ccm.factory.system.dao.model.User" >
-    insert into sys_user (id, name, username, 
-      password, state, create_time, 
-      level)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{level,jdbcType=INTEGER})
+  <insert id="insert" parameterType="cn.zmvision.ccm.factory.system.dao.model.User" useGeneratedKeys="true" keyProperty="id" >
+    insert into sys_user (name, username, password, 
+      contact, email, description, 
+      status, createtime)
+    values (#{name,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{contact,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.zmvision.ccm.factory.system.dao.model.User" >
+  <insert id="insertSelective" parameterType="cn.zmvision.ccm.factory.system.dao.model.User" useGeneratedKeys="true" keyProperty="id" >
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="name != null" >
         name,
       </if>
@@ -124,20 +123,23 @@
       <if test="password != null" >
         password,
       </if>
-      <if test="state != null" >
-        state,
+      <if test="contact != null" >
+        contact,
       </if>
-      <if test="createTime != null" >
-        create_time,
+      <if test="email != null" >
+        email,
       </if>
-      <if test="level != null" >
-        level,
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createtime != null" >
+        createtime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
@@ -147,14 +149,20 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="state != null" >
-        #{state,jdbcType=INTEGER},
+      <if test="contact != null" >
+        #{contact,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
       </if>
-      <if test="level != null" >
-        #{level,jdbcType=INTEGER},
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -179,14 +187,20 @@
       <if test="record.password != null" >
         password = #{record.password,jdbcType=VARCHAR},
       </if>
-      <if test="record.state != null" >
-        state = #{record.state,jdbcType=INTEGER},
+      <if test="record.contact != null" >
+        contact = #{record.contact,jdbcType=VARCHAR},
       </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
       </if>
-      <if test="record.level != null" >
-        level = #{record.level,jdbcType=INTEGER},
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -199,9 +213,11 @@
       name = #{record.name,jdbcType=VARCHAR},
       username = #{record.username,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      level = #{record.level,jdbcType=INTEGER}
+      contact = #{record.contact,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -218,14 +234,20 @@
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=INTEGER},
+      <if test="contact != null" >
+        contact = #{contact,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="level != null" >
-        level = #{level,jdbcType=INTEGER},
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -235,9 +257,11 @@
     set name = #{name,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      state = #{state,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      level = #{level,jdbcType=INTEGER}
+      contact = #{contact,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

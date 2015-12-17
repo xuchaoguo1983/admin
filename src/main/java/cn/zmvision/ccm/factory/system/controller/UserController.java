@@ -14,30 +14,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.zmvision.ccm.factory.base.bo.JsonResult;
 import cn.zmvision.ccm.factory.base.bo.PageResult;
-import cn.zmvision.ccm.factory.system.bo.RoleQueryInput;
-import cn.zmvision.ccm.factory.system.dao.model.Role;
-import cn.zmvision.ccm.factory.system.dao.model.RoleMenuKey;
-import cn.zmvision.ccm.factory.system.service.RoleService;
+import cn.zmvision.ccm.factory.system.bo.UserQueryInput;
+import cn.zmvision.ccm.factory.system.dao.model.User;
+import cn.zmvision.ccm.factory.system.dao.model.UserRoleKey;
+import cn.zmvision.ccm.factory.system.service.UserService;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Controller
-@RequestMapping("system/role")
-public class RoleController {
+@RequestMapping("system/user")
+public class UserController {
 	@Resource
-	RoleService roleService;
+	UserService userService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String index() {
-		return "system/role_list";
+		return "system/user_list";
 	}
 
 	@RequestMapping(value = "/page", method = RequestMethod.POST)
 	@ResponseBody
-	public PageResult queryByPage(RoleQueryInput input) {
+	public PageResult queryByPage(UserQueryInput input) {
 		PageBounds pageBounds = input.getPageBounds();
-		PageList<Role> list = roleService.queryRoleListByPage(
+		PageList<User> list = userService.queryUserListByPage(
 				input.getExample(), pageBounds);
 
 		return new PageResult(input, list);
@@ -45,27 +45,27 @@ public class RoleController {
 
 	@RequestMapping(value = "/save")
 	@ResponseBody
-	public JsonResult save(Role role,
-			@RequestParam(value = "menuIds") List<String> menuIds) {
-		return new JsonResult(roleService.saveRole(role, menuIds));
+	public JsonResult save(User user,
+			@RequestParam(value = "roleId") List<Integer> roleId) {
+		return new JsonResult(userService.saveUser(user, roleId));
 	}
 
 	@RequestMapping(value = "/delete/{id}")
 	@ResponseBody
 	public JsonResult delete(@PathVariable Integer id) {
-		return new JsonResult(roleService.deleteRoleById(id));
+		return new JsonResult(userService.deleteUserById(id));
 	}
 
-	@RequestMapping(value = "/menu")
+	@RequestMapping(value = "/role")
 	@ResponseBody
-	public JsonResult menu(@RequestParam(value = "id") Integer id) {
-		List<RoleMenuKey> list = roleService.getMenuListByRoleId(id);
-		List<String> menuList = new ArrayList<String>();
+	public JsonResult role(@RequestParam(value = "id") Integer id) {
+		List<UserRoleKey> list = userService.queryUserRoleListById(id);
+		List<Integer> roleList = new ArrayList<Integer>();
 		if (list != null && list.size() > 0) {
-			for (RoleMenuKey key : list)
-				menuList.add(key.getMenuId());
+			for (UserRoleKey key : list)
+				roleList.add(key.getRoleId());
 		}
 
-		return new JsonResult(menuList);
+		return new JsonResult(roleList);
 	}
 }

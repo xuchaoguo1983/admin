@@ -85,6 +85,9 @@ var Helper = function() {
 				return false;
 			}
 
+			if (req.length == 0)
+				return false;
+
 			var the = this;
 
 			the._codeMap = {};
@@ -122,7 +125,7 @@ var Helper = function() {
 				alert('字典' + codemap + '不存在');
 				return '-';
 			}
-			
+
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
 				if (item.code == key)

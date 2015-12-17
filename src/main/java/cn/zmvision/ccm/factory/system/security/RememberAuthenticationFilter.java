@@ -5,14 +5,12 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.zmvision.ccm.factory.base.listener.RequestListener;
 import cn.zmvision.ccm.factory.system.dao.model.Menu;
 import cn.zmvision.ccm.factory.system.dao.model.User;
 import cn.zmvision.ccm.factory.system.service.MenuService;
@@ -54,11 +52,7 @@ public class RememberAuthenticationFilter extends FormAuthenticationFilter {
 				List<Menu> menuList = menuService.getMenuListByUserId(user
 						.getId());
 
-				HttpServletRequest httpRequest = (HttpServletRequest) request;
-				String basePath = (String) httpRequest
-						.getAttribute(RequestListener.BASE_PATH);
-
-				SessionUtil.setMenu(MenuBuilder.build(menuList, basePath));
+				SessionUtil.setMenu(MenuBuilder.build(menuList));
 			}
 		}
 

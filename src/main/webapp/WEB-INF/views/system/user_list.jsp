@@ -4,11 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>角色管理</title>
-<content tag="head">
-<link href="static/global/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet"
-	type="text/css" />
-</content>
+<title>用户管理</title>
+<content tag="head"> </content>
 </head>
 <body>
 	<content tag="body">
@@ -20,8 +17,8 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="btn-group">
-								<button id="btnNewRole" class="btn green">
-									添加新角色 <i class="fa fa-plus"></i>
+								<button id="btnNewUser" class="btn green">
+									添加新用户 <i class="fa fa-plus"></i>
 								</button>
 							</div>
 						</div>
@@ -34,27 +31,35 @@
 						<div class="table-actions-wrapper">
 							<form class="form-inline">
 								<div class="form-group">
-									<label for="name">角色名称</label> <input type="text"
+									<label for="name">用户姓名</label> <input type="text"
 										class="form-control form-filter" name="name"
-										placeholder="角色名称">
+										placeholder="用户名称">
+								</div>
+								<div class="form-group">
+									<label for="name">登录账户</label> <input type="text"
+										class="form-control form-filter" name="username"
+										placeholder="登录名">
 								</div>
 								<div class="form-group">
 									<label for="status">状态</label> <select name="status"
 										class="form-control form-filter" data-codemap="USER_STATUS">
-
 									</select>
 								</div>
+
 								<button type="button" class="btn btn-primary filter-submit">查询</button>
 								<button type="button" class="btn btn-default filter-cancel">重置</button>
 							</form>
 						</div>
 						<table class="table table-striped table-bordered table-hover"
-							id="roleTable">
+							id="userTable">
 							<thead>
 								<tr role="row" class="heading">
-									<th data-name="name" data-order="asc" class="sortable">角色名称</th>
-									<th data-name="status" data-codemap="USER_STATUS" class="sortable">状态</th>
-									<th data-name="description" class="sortable">角色说明</th>
+									<th data-name="name">用户姓名</th>
+									<th data-name="username">登录账户</th>
+									<th data-name="contact">联系方式</th>
+									<th data-name="status" data-codemap="USER_STATUS"
+										class="sortable">状态</th>
+									<th data-name="createtime" data-order="desc" class="sortable">创建时间</th>
 									<th data-action="edit,remove" width="10%">操作</th>
 								</tr>
 							</thead>
@@ -68,57 +73,89 @@
 		</div>
 	</div>
 
-	<!-- 角色信息 -->
-	<div class="modal fade" id="roleModel" tabindex="-1" role="basic"
+	<!-- 用户信息 -->
+	<div class="modal fade" id="userModel" tabindex="-1" role="basic"
 		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true"></button>
-					<h4 class="modal-title">角色编辑</h4>
+					<h4 class="modal-title">用户编辑</h4>
 				</div>
 				<div class="modal-body">
 					<div class="alertContainer"></div>
 					<form class="form-horizontal" role="form">
 						<div class="form-body">
-							<input type="text" name="id" style="display: none"/>
-						
+							<input type="text" name="id" style="display: none" />
+
 							<div class="form-group">
-								<label class="col-md-3 control-label">角色名称</label>
+								<label class="col-md-3 control-label">用户姓名</label>
 								<div class="col-md-9">
 									<div class="input-icon right">
 										<i class="fa"></i> <input type="text" class="form-control"
-											placeholder="角色名称" name="name" required>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-3 control-label">状态</label>
-								<div class="col-md-9">
-									<div class="input-icon right">
-										<i class="fa"></i> <select name="status" class="form-control input-small"
-											data-codemap="USER_STATUS" required>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-3 control-label">角色说明</label>
-								<div class="col-md-9">
-									<div class="input-icon right">
-										<i class="fa"></i> <input type="text" class="form-control"
-											placeholder="角色说明" name="description">
+											placeholder="用户名称" name="name" required>
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-3 control-label">关联菜单</label>
+								<label class="col-md-3 control-label">登录账户</label>
 								<div class="col-md-9">
-									<input type="hidden" id="menuIds" name="menuIds"/>
-									<div id="menutree">
+									<div class="input-icon right">
+										<i class="fa"></i> <input type="text" class="form-control"
+											placeholder="登录账户" name="username" required>
 									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label">联系方式</label>
+								<div class="col-md-9">
+									<div class="input-icon right">
+										<i class="fa"></i> <input type="text" class="form-control"
+											placeholder="联系方式" name="contact">
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label">邮件地址</label>
+								<div class="col-md-9">
+									<div class="input-icon right">
+										<i class="fa"></i> <input type="text" class="form-control"
+											placeholder="邮件地址" name="email" email>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label">用户备注</label>
+								<div class="col-md-9">
+									<div class="input-icon right">
+										<i class="fa"></i>
+										<textarea class="form-control" rows="3" placeholder="用户备注"
+											name="description"></textarea>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label">状态</label>
+								<div class="col-md-9">
+									<div class="input-icon right">
+										<i class="fa"></i> <select name="status"
+											class="form-control input-small" data-codemap="USER_STATUS"
+											required>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label">关联角色</label>
+								<div class="col-md-9">
+									<div id="roleListdiv" class="checkbox-list"></div>
 								</div>
 							</div>
 
@@ -137,13 +174,11 @@
 
 	<!-- END PAGE CONTENT--> </content>
 
-	<content tag="footer"> 
-	<script src="static/global/plugins/jstree/dist/jstree.min.js"></script>
-	<script
-		src="static/pages/scripts/system/role.js" type="text/javascript"></script>
+	<content tag="footer"> <script
+		src="static/pages/scripts/system/user.js" type="text/javascript"></script>
 	<script>
 		jQuery(document).ready(function() {
-			RolePage.init();
+			UserPage.init();
 		});
 	</script> </content>
 </body>

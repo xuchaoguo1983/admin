@@ -7,7 +7,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 
 public class PageMeta {
 	private int start = 0;
-	private int length = 10;
+	private int length = -1;
 	private int draw;
 	private String sortingOrder;// "age.asc,gender.desc"
 
@@ -44,6 +44,9 @@ public class PageMeta {
 	}
 
 	public PageBounds getPageBounds() {
+		if (length < 0)
+			return new PageBounds();
+		
 		PageBounds bounds = new PageBounds(1 + start / length, length);
 		bounds.setContainsTotalCount(true);
 		bounds.setAsyncTotalCount(false);

@@ -10,7 +10,7 @@
 	<context id="DB2Tables" targetRuntime="MyBatis3">
 		<plugin type="cn.zmvision.ccm.mybatis.plugin.PaginationPlugin"></plugin>
 		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
-		
+
 		<commentGenerator>
 			<property name="suppressDate" value="true" />
 			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
@@ -43,25 +43,28 @@
 		</javaClientGenerator>
 
 		<!-- 要生成的表 tableName是数据库中的表名 -->
-		
+
 		<table tableName="sys_codeitem" domainObjectName="CodeItem">
 		</table>
 		<table tableName="sys_codemap" domainObjectName="CodeMap">
 		</table>
 		<table tableName="sys_menu" domainObjectName="Menu">
 		</table>
-				
+
+
 		<table tableName="sys_user" domainObjectName="User">
-			<columnOverride column="create_time" javaType="String"></columnOverride>
+			<generatedKey column="id" sqlStatement="JDBC" identity="true"></generatedKey>
+			<columnOverride column="createtime" javaType="String"></columnOverride>
 		</table>
-		
+
 		<table tableName="sys_role" domainObjectName="Role">
+			<generatedKey column="id" sqlStatement="JDBC" identity="true"></generatedKey>
 		</table>
 		<table tableName="sys_role_menu" domainObjectName="RoleMenu">
 		</table>
 		<table tableName="sys_user_role" domainObjectName="UserRole">
 		</table>
-		
+
 
 	</context>
 </generatorConfiguration>  

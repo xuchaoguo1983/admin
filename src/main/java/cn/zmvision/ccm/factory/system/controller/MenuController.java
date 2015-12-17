@@ -1,5 +1,8 @@
 package cn.zmvision.ccm.factory.system.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -7,8 +10,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.zmvision.ccm.factory.base.bo.JsTreeElement;
 import cn.zmvision.ccm.factory.base.bo.JsonResult;
 import cn.zmvision.ccm.factory.base.bo.Message;
 import cn.zmvision.ccm.factory.base.bo.PageResult;
@@ -44,7 +49,9 @@ public class MenuController {
 	@ResponseBody
 	public JsonResult save(Menu menu) {
 		String pid = menu.getPid();
-		if (!StringUtils.isEmpty(pid) && menuService.queryMenuById(pid) == null) {
+		if (StringUtils.isEmpty(pid)) {
+			menu.setPid("#");
+		} else if (menuService.queryMenuById(pid) == null) {
 			return new JsonResult(Message.MENU_PARENT_NOT_EXIST);
 		}
 
@@ -55,5 +62,26 @@ public class MenuController {
 	@ResponseBody
 	public JsonResult delete(@PathVariable String id) {
 		return new JsonResult(menuService.deleteMenuById(id));
+	}
+
+	@RequestMapping(value = "/tree")
+	@ResponseBody
+	public List<JsTreeElement> tree(
+			@RequestParam(value = "id", defaultValue = "#") String id) {
+		List<JsTreeElement> tree = new ArrayList<JsTreeElement>();
+		List<Menu> menuList = menuService.queryMenuListByExample(null);
+		if (menuList != null && menuList.size() > 0) {
+			for (Menu menu : menuList) {
+				JsTreeElement node = new JsTreeElement();
+				node.setId(menu.getId());
+				node.setParent(menu.getPid());
+				node.setText(menu.getName());
+				node.setIcon(menu.getIcon());
+
+				tree.add(node);
+			}
+		}
+
+		return tree;
 	}
 }

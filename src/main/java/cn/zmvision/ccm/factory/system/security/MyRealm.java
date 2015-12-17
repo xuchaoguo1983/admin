@@ -50,7 +50,7 @@ public class MyRealm extends AuthorizingRealm {
 			throw new UnknownAccountException();
 		if (!user.getPassword().equals(new String(token.getPassword())))
 			throw new IncorrectCredentialsException();
-		if (user.getState() != Constants.SYS_USER_STATE_ACTIVE)
+		if (user.getStatus() != Constants.SYS_USER_STATE_ACTIVE)
 			throw new LockedAccountException();
 
 		// 保存一些会话记录

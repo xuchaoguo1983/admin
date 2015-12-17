@@ -1,11 +1,73 @@
 /**
- * 菜单
+ * 角色管理
  */
 var RolePage = function() {
 	var grid = null;
-	
+
+	var initMenuTree = function() {
+		$('#menutree').jstree({
+			'core' : {
+				"themes" : {
+					"responsive" : false
+				},
+				// so that create works
+				"check_callback" : true,
+				'data' : {
+					'url' : function(node) {
+						return 'system/menu/tree';
+					},
+					'data' : function(node) {
+						return {
+							'id' : node.id
+						};
+					}
+				}
+			},
+
+			'plugins' : [ "checkbox" ],
+
+		});
+	};
+
+	/**
+	 * 根据角色ID自动选中已关联菜单项
+	 */
+	var setMenuTree = function(roleId) {
+		$('#menutree').jstree("deselect_all");
+
+		if (roleId == null)
+			return;
+
+		$.post('system/role/menu?id=' + roleId, function(res) {
+			if (res.code == 0) {
+				for (var i = 0; i < res.data.length; i++) {
+					var menuId = res.data[i];
+					var parent = $('#menutree').jstree("get_parent", menuId);
+
+					// open 1st before select
+					if (!$('#menutree').jstree('open_node', parent, function() {
+						$('#menutree').jstree("select_node", menuId);
+					})) {
+						$('#menutree').jstree("select_node", menuId);
+					}
+				}
+
+			}
+		});
+	};
+
 	var handleModal = function() {
-		Helper.initModal("#roleModel", 'system/role/save', null, function() {
+		$("#btnNewRole").click(function() {
+			setMenuTree();
+			$("#roleModel").modal('show');
+		});
+
+		Helper.initModal("#roleModel", 'system/role/save', function() {
+			var menuIds = $('#menutree').jstree("get_selected", false);
+			// 删除重复元素
+			$('#roleModel #menuIds').val(
+					menuIds.join(",").match(/([^,]+)(?!.*\1)/ig));
+		}, function() {
 			if (grid)
 				grid.reload();
 		});
@@ -18,6 +80,7 @@ var RolePage = function() {
 						var modal = $("#roleModel");
 						$("form", modal).autofill(row);
 						modal.modal('show');
+						setMenuTree(row.id);
 						break;
 					case 'remove':// 删除
 						bootbox.confirm("确定删除么？", function(result) {
@@ -45,6 +108,7 @@ var RolePage = function() {
 		init : function() {
 			handleDataTable();
 			handleModal();
+			initMenuTree();
 		}
 	};
 }();

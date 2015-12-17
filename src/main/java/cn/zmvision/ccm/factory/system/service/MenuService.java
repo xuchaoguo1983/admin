@@ -91,7 +91,40 @@ public class MenuService {
 		MenuExample example3 = new MenuExample();
 		example3.createCriteria().andIdIn(menuIds);
 
-		return menuMapper.selectByExample(example3);
+		List<Menu> list = menuMapper.selectByExample(example3);
+
+		// 子菜单有效，则父菜单自动有效
+		if (list != null) {
+			for (int i = 0; i < list.size(); i++) {
+				Menu m = list.get(i);
+
+				if (!m.getPid().equals("#") && !containsMenu(list, m.getPid())) {
+					Menu parent = menuMapper.selectByPrimaryKey(m.getPid());
+					if (parent != null)
+						list.add(parent);
+				}
+			}
+		}
+
+		return list;
+	}
+
+	private boolean containsMenu(List<Menu> list, String id) {
+		for (Menu m : list)
+			if (m.getId().equals(id))
+				return true;
+
+		return false;
+	}
+
+	/**
+	 * 不分页查询菜单列表
+	 * 
+	 * @param example
+	 * @return
+	 */
+	public List<Menu> queryMenuListByExample(MenuExample example) {
+		return menuMapper.selectByExample(example);
 	}
 
 	/**

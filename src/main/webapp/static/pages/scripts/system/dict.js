@@ -1,5 +1,5 @@
 /**
- * 菜单
+ * 数据字典
  */
 var DictPage = function() {
 	var mapGrid = null;

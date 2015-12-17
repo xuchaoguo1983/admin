@@ -38,7 +38,7 @@ public class MainController {
 			return new JsonResult(Message.DATA_ERROR);
 
 		user.setPassword(newpassword);
-		userService.saveUser(user);
+		userService.saveUser(user, null);
 
 		return new JsonResult();
 	}
