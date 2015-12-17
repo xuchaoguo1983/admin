@@ -11,7 +11,7 @@ var UserPage = function() {
 				var html = '';
 				for (var i=0;i<res.data.length;i++) {
 					var row = res.data[i];
-					html += '<input name="roleId" type="checkbox" value="'+row.id+'">';
+					html += '<input name="roleId" type="checkbox" required value="'+row.id+'">';
 					html += '<span>' + row.name + '</span>';
 				}
 				$('#roleListdiv').html(html);

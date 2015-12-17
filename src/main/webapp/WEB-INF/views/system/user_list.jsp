@@ -33,7 +33,7 @@
 								<div class="form-group">
 									<label for="name">用户姓名</label> <input type="text"
 										class="form-control form-filter" name="name"
-										placeholder="用户名称">
+										placeholder="用户姓名">
 								</div>
 								<div class="form-group">
 									<label for="name">登录账户</label> <input type="text"
@@ -123,8 +123,8 @@
 								<label class="col-md-3 control-label">邮件地址</label>
 								<div class="col-md-9">
 									<div class="input-icon right">
-										<i class="fa"></i> <input type="text" class="form-control"
-											placeholder="邮件地址" name="email" email>
+										<i class="fa"></i> <input type="email" class="form-control"
+											placeholder="邮件地址" name="email">
 									</div>
 								</div>
 							</div>
