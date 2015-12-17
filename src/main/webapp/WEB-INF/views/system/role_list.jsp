@@ -40,7 +40,7 @@
 								</div>
 								<div class="form-group">
 									<label for="status">状态</label> <select name="status"
-										class="form-control form-filter" data-codemap="USER_STATUS">
+										class="form-control form-filter" data-codemap="ENTITY_STATUS">
 
 									</select>
 								</div>
@@ -53,7 +53,7 @@
 							<thead>
 								<tr role="row" class="heading">
 									<th data-name="name" data-order="asc" class="sortable">角色名称</th>
-									<th data-name="status" data-codemap="USER_STATUS" class="sortable">状态</th>
+									<th data-name="status" data-codemap="ENTITY_STATUS" class="sortable">状态</th>
 									<th data-name="description" class="sortable">角色说明</th>
 									<th data-action="edit,remove" width="10%">操作</th>
 								</tr>
@@ -98,7 +98,7 @@
 								<div class="col-md-9">
 									<div class="input-icon right">
 										<i class="fa"></i> <select name="status" class="form-control input-small"
-											data-codemap="USER_STATUS" required>
+											data-codemap="ENTITY_STATUS" required>
 										</select>
 									</div>
 								</div>

@@ -9,7 +9,8 @@ import cn.zmvision.ccm.factory.system.dao.model.UserExample.Criteria;
 public class UserQueryInput extends PageMeta {
 	private String name;
 	private String username;
-	private Integer status;
+	private String status;
+	private String type;
 
 	public String getName() {
 		return name;
@@ -27,12 +28,20 @@ public class UserQueryInput extends PageMeta {
 		this.username = username;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public UserExample getExample() {
@@ -44,8 +53,12 @@ public class UserQueryInput extends PageMeta {
 		if (!StringUtils.isEmpty(username))
 			c.andUsernameLike("%" + username + "%");
 
-		if (status != null) {
+		if (!StringUtils.isEmpty(status)) {
 			c.andStatusEqualTo(status);
+		}
+
+		if (!StringUtils.isEmpty(type)) {
+			c.andTypeEqualTo(type);
 		}
 
 		return example;

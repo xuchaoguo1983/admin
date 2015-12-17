@@ -42,7 +42,7 @@
 								</div>
 								<div class="form-group">
 									<label for="status">状态</label> <select name="status"
-										class="form-control form-filter" data-codemap="USER_STATUS">
+										class="form-control form-filter" data-codemap="ENTITY_STATUS">
 									</select>
 								</div>
 
@@ -55,9 +55,11 @@
 							<thead>
 								<tr role="row" class="heading">
 									<th data-name="name">用户姓名</th>
+									<th data-name="type" data-codemap="USER_TYPE"
+										class="sortable">用户类型</th>
 									<th data-name="username">登录账户</th>
 									<th data-name="contact">联系方式</th>
-									<th data-name="status" data-codemap="USER_STATUS"
+									<th data-name="status" data-codemap="ENTITY_STATUS"
 										class="sortable">状态</th>
 									<th data-name="createtime" data-order="desc" class="sortable">创建时间</th>
 									<th data-action="edit,remove" width="10%">操作</th>
@@ -95,6 +97,18 @@
 									<div class="input-icon right">
 										<i class="fa"></i> <input type="text" class="form-control"
 											placeholder="用户名称" name="name" required>
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-3 control-label">用户类型</label>
+								<div class="col-md-9">
+									<div class="input-icon right">
+										<i class="fa"></i> <select name="type"
+											class="form-control input-small" data-codemap="USER_TYPE"
+											required>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -145,7 +159,7 @@
 								<div class="col-md-9">
 									<div class="input-icon right">
 										<i class="fa"></i> <select name="status"
-											class="form-control input-small" data-codemap="USER_STATUS"
+											class="form-control input-small" data-codemap="ENTITY_STATUS"
 											required>
 										</select>
 									</div>

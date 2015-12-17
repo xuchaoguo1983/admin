@@ -7,6 +7,8 @@ public class User implements Serializable {
 
     private String name;
 
+    private String type;
+
     private String username;
 
     private String password;
@@ -17,7 +19,9 @@ public class User implements Serializable {
 
     private String description;
 
-    private Integer status;
+    private String extrainfo;
+
+    private String status;
 
     private String createtime;
 
@@ -37,6 +41,14 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getUsername() {
@@ -79,12 +91,20 @@ public class User implements Serializable {
         this.description = description == null ? null : description.trim();
     }
 
-    public Integer getStatus() {
+    public String getExtrainfo() {
+        return extrainfo;
+    }
+
+    public void setExtrainfo(String extrainfo) {
+        this.extrainfo = extrainfo == null ? null : extrainfo.trim();
+    }
+
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getCreatetime() {

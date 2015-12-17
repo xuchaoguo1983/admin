@@ -54,8 +54,7 @@ public class RoleService {
 			roleIds.add(key.getRoleId());
 
 		RoleExample example2 = new RoleExample();
-		example2.createCriteria()
-				.andStatusEqualTo(Constants.SYS_USER_STATE_ACTIVE)
+		example2.createCriteria().andStatusEqualTo(Constants.CODE_ENTITY_ACTIVE)
 				.andIdIn(roleIds);
 
 		return roleMapper.selectByExample(example2);

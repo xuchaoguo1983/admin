@@ -8,7 +8,7 @@ import cn.zmvision.ccm.factory.system.dao.model.RoleExample.Criteria;
 
 public class RoleQueryInput extends PageMeta {
 	private String name;
-	private Integer status;
+	private String status;
 
 	public String getName() {
 		return name;
@@ -18,11 +18,11 @@ public class RoleQueryInput extends PageMeta {
 		this.name = name;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -32,7 +32,7 @@ public class RoleQueryInput extends PageMeta {
 		if (!StringUtils.isEmpty(name))
 			c.andNameLike("%" + name + "%");
 
-		if (status != null) {
+		if (!StringUtils.isEmpty(status)) {
 			c.andStatusEqualTo(status);
 		}
 

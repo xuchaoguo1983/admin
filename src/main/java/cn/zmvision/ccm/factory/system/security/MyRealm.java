@@ -21,13 +21,14 @@ import cn.zmvision.ccm.factory.system.service.UserService;
 
 /**
  * 登陆验证
+ * 
  * @author xuchaoguo
- *
+ * 
  */
 public class MyRealm extends AuthorizingRealm {
 	@Resource
 	UserService userService;
-	
+
 	/**
 	 * 为当前登录的Subject授予角色和权限
 	 */
@@ -50,7 +51,7 @@ public class MyRealm extends AuthorizingRealm {
 			throw new UnknownAccountException();
 		if (!user.getPassword().equals(new String(token.getPassword())))
 			throw new IncorrectCredentialsException();
-		if (user.getStatus() != Constants.SYS_USER_STATE_ACTIVE)
+		if (!user.getStatus().equals(Constants.CODE_ENTITY_ACTIVE))
 			throw new LockedAccountException();
 
 		// 保存一些会话记录

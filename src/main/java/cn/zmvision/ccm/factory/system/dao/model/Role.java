@@ -7,7 +7,7 @@ public class Role implements Serializable {
 
     private String name;
 
-    private Integer status;
+    private String status;
 
     private String description;
 
@@ -29,12 +29,12 @@ public class Role implements Serializable {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getDescription() {

@@ -44,19 +44,16 @@
 
 		<!-- 要生成的表 tableName是数据库中的表名 -->
 
+		<table tableName="sys_user" domainObjectName="User">
+			<generatedKey column="id" sqlStatement="JDBC" identity="true"></generatedKey>
+			<columnOverride column="createtime" javaType="String"></columnOverride>
+		</table>
 		<table tableName="sys_codeitem" domainObjectName="CodeItem">
 		</table>
 		<table tableName="sys_codemap" domainObjectName="CodeMap">
 		</table>
 		<table tableName="sys_menu" domainObjectName="Menu">
 		</table>
-
-
-		<table tableName="sys_user" domainObjectName="User">
-			<generatedKey column="id" sqlStatement="JDBC" identity="true"></generatedKey>
-			<columnOverride column="createtime" javaType="String"></columnOverride>
-		</table>
-
 		<table tableName="sys_role" domainObjectName="Role">
 			<generatedKey column="id" sqlStatement="JDBC" identity="true"></generatedKey>
 		</table>
