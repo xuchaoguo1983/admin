@@ -25,6 +25,7 @@
 		<fileSet>
 			<directory>src/main/config/test</directory>
 			<includes>
+				<include>config-manager.properties</include>
 				<include>jdbc.properties</include>
 				<include>log4j.properties</include>
 			</includes>
