@@ -174,19 +174,19 @@ var Datatable = function() {
             //数据列映射和默认排序设置
             var columnDefs = [];
 			var orders = [];
-			var actions = [];
 			
 			$ ("th", table).each(function() {
-				if ($(this).is('[data-action]')) {
+				var dataAction = $(this).data('action');
+				if (dataAction) {
 					var col = {};
 					col.targets = $(this).index();
-					actions = $(this).attr("data-action").split(",");
 					col.render = function(data, type, row) {
 						var html = "<div data-row='"+JSON.stringify(row)+"'>";
 						// action默认是class名称，用于定位
+						var actions = dataAction.split(',');
 						for(var i in actions) {
 							var action=actions[i];
-							html += "<a style='padding-left:"+(i>0?6:0)+"px;' class='"+action+"'><i class='fa fa-"+action+"'></i></a>";
+							html += "<a style='padding-left:"+(i>0?6:0)+"px;' data-action='"+action+"'><i class='fa fa-"+action+"'></i></a>";
 						}
 						
 						html += "</div>";
@@ -194,28 +194,29 @@ var Datatable = function() {
 					};
 					
 					columnDefs.push(col);
-				}
-				else if ($(this).is("[data-name]")) {
-					var col = {};
-					col.data = $(this).attr("data-name");
-					col.targets = $(this).index();
-					col.bSortable = $(this).is(".sortable");
+				} 
+				else {
+					var dataName = $(this).data('name');
+					if (dataName) {
+						var col = {};
+						col.data = dataName;
+						col.targets = $(this).index();
+						col.bSortable = $(this).data("sortable") || false;
 
-					if ($(this).is("[data-codemap]")) {
-						var codemap = $(this).attr("data-codemap");
-						col.render = function(data, type, row) {
-							return Helper.getCodeData(codemap, data);
-						};
+						var dataCodemap = $(this).data('codemap');
+						if (dataCodemap) {
+							col.render = function(data, type, row) {
+								return Helper.getCodeData(dataCodemap, data);
+							};
+						}
+						
+						columnDefs.push(col);
 					}
-					
-					columnDefs.push(col);
 				}
-
-				if ($(this).is('[data-order]')) {
-					var dir = $(this).attr("data-order");
-					var order = [];
-					order.push($(this).index(), dir);
-					orders.push(order);
+				
+				var dataOrder = $(this).data('order');
+				if (dataOrder) {
+					orders.push([$(this).index(), dataOrder]);
 				}
 			});
             
@@ -279,16 +280,13 @@ var Datatable = function() {
             });
             
             // 操作列点击注册
-            for ( var i in actions) {
-				table.on("click", 'div .' + actions[i], function(e) {
-					if (tableOptions.onRowAction) {
-						var rowData = $(this).parent().attr("data-row");
-						var action = $(this).attr("class");
-						tableOptions.onRowAction.call(undefined, the, action, JSON
-								.parse(rowData));
-					}
-				});
-			}
+            table.on("click", '[data-action]', function(e) {
+				if (tableOptions.onRowAction) {
+					var rowData = $(this).parent().data("row");
+					var action = $(this).data("action");
+					tableOptions.onRowAction.call(undefined, the, action, rowData);
+				}
+			});
         },
         
         initFilterParams: function() {

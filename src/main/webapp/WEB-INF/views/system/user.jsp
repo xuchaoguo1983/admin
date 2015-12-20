@@ -55,12 +55,12 @@
 							<thead>
 								<tr role="row" class="heading">
 									<th data-name="name">用户姓名</th>
-									<th data-name="type" data-codemap="USER_TYPE" class="sortable">用户类型</th>
+									<th data-name="type" data-codemap="USER_TYPE" data-sortable="true">用户类型</th>
 									<th data-name="username">登录账户</th>
 									<th data-name="contact">联系方式</th>
 									<th data-name="status" data-codemap="ENTITY_STATUS"
-										class="sortable">状态</th>
-									<th data-name="createtime" data-order="desc" class="sortable">创建时间</th>
+										data-sortable="true">状态</th>
+									<th data-name="createtime" data-order="desc" data-sortable="true">创建时间</th>
 									<th data-action="edit,remove" width="10%">操作</th>
 								</tr>
 							</thead>

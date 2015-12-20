@@ -164,7 +164,7 @@ var Helper = function() {
 			var the = this;
 			$('select[data-codemap]').each(
 					function() {
-						var codemap = $(this).attr("data-codemap");
+						var codemap = $(this).data("codemap");
 						var items = the._codeMap[codemap];
 						if (items == null) {
 							alert('字典' + codemap + '不存在');

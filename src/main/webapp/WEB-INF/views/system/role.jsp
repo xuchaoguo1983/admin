@@ -53,10 +53,10 @@
 							id="roleTable">
 							<thead>
 								<tr role="row" class="heading">
-									<th data-name="name" data-order="asc" class="sortable">角色名称</th>
+									<th data-name="name" data-order="asc" data-sortable="true">角色名称</th>
 									<th data-name="status" data-codemap="ENTITY_STATUS"
-										class="sortable">状态</th>
-									<th data-name="description" class="sortable">角色说明</th>
+										data-sortable="true">状态</th>
+									<th data-name="description" data-sortable="true">角色说明</th>
 									<th data-action="edit,remove" width="10%">操作</th>
 								</tr>
 							</thead>

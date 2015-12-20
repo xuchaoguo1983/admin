@@ -62,7 +62,7 @@ var App = function() {
 		// 自动绑定字典数据
 		var codemaps = [];
 		$(".page-content [data-codemap]").each(function() {
-			var codemap = $(this).attr("data-codemap");
+			var codemap = $(this).data("codemap");
 			if ($.inArray(codemap, codemaps) == -1)
 				codemaps.push(codemap);
 		});
@@ -89,11 +89,11 @@ var App = function() {
 	var handleControlInit = function() {
 		$(".page-content [data-type]").each(
 				function() {
-					var dataType = $(this).attr("data-type");
-					var dataName = $(this).attr("data-name");
-					var dataAjax = $(this).attr("data-ajax");
-					var multiple = $(this).attr("data-multiple") == 'true';
-					var required = $(this).attr("data-required") == 'true';
+					var dataType = $(this).data("type");
+					var dataName = $(this).data("name");
+					var dataAjax = $(this).data("ajax");
+					var multiple = $(this).data("multiple") || false;
+					var required = $(this).attr("required") || false;
 					if (dataType == 'checkbox') {
 						// checkbox
 						Helper.initCheckboxData($(this), dataName, dataAjax, {

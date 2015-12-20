@@ -43,7 +43,7 @@
 							id="dictTable">
 							<thead>
 								<tr role="row" class="heading">
-									<th data-name="id" data-order="asc" class="sortable">字典代码</th>
+									<th data-name="id" data-order="asc" data-sortable="true">字典代码</th>
 									<th data-name="name">字典名称</th>
 									<th data-action="list,edit,remove" width="10%">操作</th>
 								</tr>
@@ -138,7 +138,7 @@
 									<tr role="row" class="heading">
 										<th data-name="code">字典项代码</th>
 										<th data-name="name">字典项名称</th>
-										<th data-name="sort" data-order="asc" class="sortable">排序</th>
+										<th data-name="sort" data-order="asc" data-sortable="true">排序</th>
 										<th data-action="edit,remove" width="10%">操作</th>
 									</tr>
 								</thead>
@@ -193,8 +193,8 @@
 								<label class="col-md-3 control-label">排序</label>
 								<div class="col-md-9">
 									<div class="input-icon right">
-										<i class="fa"></i> <input type="text" class="form-control"
-											placeholder="排序" name="sort" required digits>
+										<i class="fa"></i> <input type="number" class="form-control"
+											placeholder="排序" name="sort" required>
 									</div>
 								</div>
 							</div>

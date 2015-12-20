@@ -48,10 +48,10 @@
 							id="menuTable">
 							<thead>
 								<tr role="row" class="heading">
-									<th data-name="id" data-order="asc" class="sortable">菜单ID</th>
+									<th data-name="id" data-order="asc" data-sortable="true">菜单ID</th>
 									<th data-name="name">菜单名称</th>
 									<th data-name="url">URL</th>
-									<th data-name="pid" class="sortable">父级菜单ID</th>
+									<th data-name="pid" data-sortable="true">父级菜单ID</th>
 									<th data-name="icon">菜单Icon</th>
 									<th data-action="edit,remove" width="10%">操作</th>
 								</tr>
