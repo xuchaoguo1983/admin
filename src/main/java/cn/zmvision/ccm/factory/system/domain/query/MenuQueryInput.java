@@ -1,4 +1,4 @@
-package cn.zmvision.ccm.factory.system.bo;
+package cn.zmvision.ccm.factory.system.domain.query;
 
 import org.springframework.util.StringUtils;
 

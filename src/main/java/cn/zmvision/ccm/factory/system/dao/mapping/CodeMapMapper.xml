@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.zmvision.ccm.factory.system.dao.mapping.CodeMapMapper" >
   <resultMap id="BaseResultMap" type="cn.zmvision.ccm.factory.system.dao.model.CodeMap" >
-    <id column="code" property="code" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -64,7 +64,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    code, name
+    id, name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.zmvision.ccm.factory.system.dao.model.CodeMapExample" >
     select
@@ -84,11 +84,11 @@
     select 
     <include refid="Base_Column_List" />
     from sys_codemap
-    where code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_codemap
-    where code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="cn.zmvision.ccm.factory.system.dao.model.CodeMapExample" >
     delete from sys_codemap
@@ -97,22 +97,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.zmvision.ccm.factory.system.dao.model.CodeMap" >
-    insert into sys_codemap (code, name)
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+    insert into sys_codemap (id, name)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.zmvision.ccm.factory.system.dao.model.CodeMap" >
     insert into sys_codemap
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="code != null" >
-        code,
+      <if test="id != null" >
+        id,
       </if>
       <if test="name != null" >
         name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="code != null" >
-        #{code,jdbcType=VARCHAR},
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -128,8 +128,8 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update sys_codemap
     <set >
-      <if test="record.code != null" >
-        code = #{record.code,jdbcType=VARCHAR},
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -141,7 +141,7 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update sys_codemap
-    set code = #{record.code,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -154,11 +154,11 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
     </set>
-    where code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.zmvision.ccm.factory.system.dao.model.CodeMap" >
     update sys_codemap
     set name = #{name,jdbcType=VARCHAR}
-    where code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

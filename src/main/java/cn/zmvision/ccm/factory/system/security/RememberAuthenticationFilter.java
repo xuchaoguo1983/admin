@@ -39,7 +39,7 @@ public class RememberAuthenticationFilter extends FormAuthenticationFilter {
 			if (user == null) {
 				String userName = subject.getPrincipal().toString();
 
-				user = userService.getByUserName(userName);
+				user = userService.queryUserByName(userName);
 				if (user == null) {
 					logger.warn("user doesn't exist: {}", userName);
 					return false;

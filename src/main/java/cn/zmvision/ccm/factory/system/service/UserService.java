@@ -36,7 +36,7 @@ public class UserService {
 	 * @param userName
 	 * @return
 	 */
-	public User getByUserName(String userName) {
+	public User queryUserByName(String userName) {
 		UserExample example = new UserExample();
 		example.createCriteria().andUsernameEqualTo(userName);
 
@@ -45,6 +45,15 @@ public class UserService {
 			return list.get(0);
 		else
 			return null;
+	}
+	
+	/**
+	 * 根据ID查询用户信息
+	 * @param id
+	 * @return
+	 */
+	public User queryUserById(Integer id) {
+		return userMapper.selectByPrimaryKey(id);
 	}
 
 	/**
@@ -60,9 +69,10 @@ public class UserService {
 	}
 
 	/**
-	 * 更新用户信息
+	 * 保存用户和关联角色信息
 	 * 
 	 * @param user
+	 * @param roleIds
 	 * @return
 	 */
 	public boolean saveUser(User user, List<Integer> roleIds) {

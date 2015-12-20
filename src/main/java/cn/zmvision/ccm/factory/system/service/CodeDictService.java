@@ -33,7 +33,7 @@ public class CodeDictService {
 	}
 
 	public boolean saveCodeMap(CodeMap record) {
-		if (queryCodeMapById(record.getCode()) == null)
+		if (queryCodeMapById(record.getId()) == null)
 			return codeMapMapper.insert(record) > 0;
 		return codeMapMapper.updateByPrimaryKey(record) > 0;
 	}

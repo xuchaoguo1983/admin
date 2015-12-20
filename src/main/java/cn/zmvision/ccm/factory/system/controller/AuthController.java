@@ -25,19 +25,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import cn.zmvision.ccm.factory.base.DummyController;
 import cn.zmvision.ccm.factory.base.bo.JsonResult;
 import cn.zmvision.ccm.factory.base.bo.Message;
 import cn.zmvision.ccm.factory.system.util.VerifyCodeUtil;
 
 @Controller
 @RequestMapping("system/auth")
-public class AuthController {
+public class AuthController extends DummyController{
 	private final Logger logger = LoggerFactory
 			.getLogger(AuthController.class);
 
 	private final static String SESSION_ATTR_VERIFY_CODE = "verifyCode";
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@Override
 	public String index() {
 		return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/";
 	}

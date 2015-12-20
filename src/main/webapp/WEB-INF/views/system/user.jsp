@@ -17,7 +17,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="btn-group">
-								<button id="btnNewUser" class="btn green">
+								<button data-toggle="modal" href="#userModel" class="btn green">
 									添加新用户 <i class="fa fa-plus"></i>
 								</button>
 							</div>
@@ -55,8 +55,7 @@
 							<thead>
 								<tr role="row" class="heading">
 									<th data-name="name">用户姓名</th>
-									<th data-name="type" data-codemap="USER_TYPE"
-										class="sortable">用户类型</th>
+									<th data-name="type" data-codemap="USER_TYPE" class="sortable">用户类型</th>
 									<th data-name="username">登录账户</th>
 									<th data-name="contact">联系方式</th>
 									<th data-name="status" data-codemap="ENTITY_STATUS"
@@ -100,7 +99,7 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="form-group">
 								<label class="col-md-3 control-label">用户类型</label>
 								<div class="col-md-9">
@@ -169,7 +168,8 @@
 							<div class="form-group">
 								<label class="col-md-3 control-label">关联角色</label>
 								<div class="col-md-9">
-									<div id="roleListdiv" class="checkbox-list"></div>
+									<div data-name="roleId" data-type="checkbox"
+										data-ajax="system/role/page" data-required="true" data-multiple="true"></div>
 								</div>
 							</div>
 
@@ -189,11 +189,12 @@
 	<!-- END PAGE CONTENT--> </content>
 
 	<content tag="footer"> <script
-		src="static/pages/scripts/system/user.js" type="text/javascript"></script>
-	<script>
-		jQuery(document).ready(function() {
-			UserPage.init();
-		});
-	</script> </content>
+		src="static/pages/scripts/crud.js" type="text/javascript"></script> <script>
+			jQuery(document).ready(function() {
+				new CRUDPage().init('system/user', {
+					reload : true
+				});
+			});
+		</script> </content>
 </body>
 </html>

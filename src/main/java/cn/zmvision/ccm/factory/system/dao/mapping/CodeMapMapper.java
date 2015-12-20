@@ -12,7 +12,7 @@ public interface CodeMapMapper {
 
     int deleteByExample(CodeMapExample example);
 
-    int deleteByPrimaryKey(String code);
+    int deleteByPrimaryKey(String id);
 
     int insert(CodeMap record);
 
@@ -22,7 +22,7 @@ public interface CodeMapMapper {
 
     List<CodeMap> selectByExample(CodeMapExample example);
 
-    CodeMap selectByPrimaryKey(String code);
+    CodeMap selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") CodeMap record, @Param("example") CodeMapExample example);
 

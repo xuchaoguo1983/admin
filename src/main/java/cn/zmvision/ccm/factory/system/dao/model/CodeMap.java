@@ -3,18 +3,18 @@ package cn.zmvision.ccm.factory.system.dao.model;
 import java.io.Serializable;
 
 public class CodeMap implements Serializable {
-    private String code;
+    private String id;
 
     private String name;
 
     private static final long serialVersionUID = 1L;
 
-    public String getCode() {
-        return code;
+    public String getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getName() {

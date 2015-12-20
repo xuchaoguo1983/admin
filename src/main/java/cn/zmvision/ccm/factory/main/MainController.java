@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.zmvision.ccm.factory.base.DummyController;
 import cn.zmvision.ccm.factory.base.bo.JsonResult;
 import cn.zmvision.ccm.factory.base.bo.Message;
 import cn.zmvision.ccm.factory.system.dao.model.User;
@@ -16,14 +17,9 @@ import cn.zmvision.ccm.factory.system.service.UserService;
 
 @Controller
 @RequestMapping("main")
-public class MainController {
+public class MainController extends DummyController {
 	@Resource
 	UserService userService;
-
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String index() {
-		return "main";
-	}
 
 	@RequestMapping(value = "/setpassord", method = RequestMethod.POST)
 	@ResponseBody
@@ -42,4 +38,5 @@ public class MainController {
 
 		return new JsonResult();
 	}
+
 }

@@ -7,61 +7,74 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.zmvision.ccm.factory.base.BaseController;
 import cn.zmvision.ccm.factory.base.bo.JsTreeElement;
 import cn.zmvision.ccm.factory.base.bo.JsonResult;
 import cn.zmvision.ccm.factory.base.bo.Message;
 import cn.zmvision.ccm.factory.base.bo.PageResult;
-import cn.zmvision.ccm.factory.system.bo.MenuQueryInput;
 import cn.zmvision.ccm.factory.system.dao.model.Menu;
+import cn.zmvision.ccm.factory.system.domain.query.MenuQueryInput;
 import cn.zmvision.ccm.factory.system.service.MenuService;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Controller
 @RequestMapping("system/menu")
-public class MenuController {
+public class MenuController extends BaseController<MenuQueryInput, Menu> {
 	@Resource
 	MenuService menuService;
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String index() {
-		return "system/menu_list";
-	}
-
-	@RequestMapping(value = "/page", method = RequestMethod.POST)
-	@ResponseBody
+	@Override
 	public PageResult queryByPage(MenuQueryInput input) {
-		PageBounds pageBounds = input.getPageBounds();
 		PageList<Menu> list = menuService.queryMenuListByPage(
-				input.getExample(), pageBounds);
+				input.getExample(), input.getPageBounds());
 
 		return new PageResult(input, list);
 	}
 
-	@RequestMapping(value = "/save")
+	@RequestMapping(value = "/query/dummy")
 	@ResponseBody
+	@Override
+	public JsonResult query(Integer id) {
+		throw new RuntimeException("not implemented.");
+	}
+
+	@RequestMapping(value = "/query")
+	@ResponseBody
+	public JsonResult query2(String id) {
+		return new JsonResult(menuService.queryMenuById(id));
+	}
+
+	@Override
 	public JsonResult save(Menu menu) {
-		String pid = menu.getPid();
-		if (StringUtils.isEmpty(pid)) {
+		if (StringUtils.isEmpty(menu.getPid())) {
+			// 根菜单
 			menu.setPid("#");
 		}
-		if (!pid.equals("#") && menuService.queryMenuById(pid) == null) {
+
+		if (!menu.getPid().equals("#")
+				&& menuService.queryMenuById(menu.getPid()) == null) {
 			return new JsonResult(Message.MENU_PARENT_NOT_EXIST);
 		}
 
 		return new JsonResult(menuService.saveMenu(menu));
 	}
 
-	@RequestMapping(value = "/delete/{id}")
+	@RequestMapping(value = "/delete/dummy")
 	@ResponseBody
-	public JsonResult delete(@PathVariable String id) {
+	@Override
+	public JsonResult delete(Integer id) {
+		throw new RuntimeException("not implemented.");
+	}
+
+	@RequestMapping(value = "/delete")
+	@ResponseBody
+	public JsonResult delete2(String id) {
+		// id类型不同，因此单独写了一个方法
 		return new JsonResult(menuService.deleteMenuById(id));
 	}
 
@@ -85,4 +98,5 @@ public class MenuController {
 
 		return tree;
 	}
+
 }

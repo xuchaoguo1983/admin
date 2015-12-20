@@ -3,8 +3,8 @@
  */
 
 var App = function() {
-	var handleGlobalInit = function() {
 
+	var handleGlobalInit = function() {
 		/** AJAX 全局配置 */
 		$.ajaxSetup({
 			aysnc : false, // 默认同步加载
@@ -36,25 +36,29 @@ var App = function() {
 		});
 
 		// 模式对话框栈式弹出的问题
-		$(document).on({
-		    'show.bs.modal': function () {
-		        var zIndex = 10000 + (10 * $('.modal:visible').length);
-		        $(this).css('z-index', zIndex);
-		        setTimeout(function() {
-		            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
-		        }, 0);
-		    },
-		    'hidden.bs.modal': function() {
-		        if ($('.modal:visible').length > 0) {
-		            // restore the modal-open class to the body element, so that scrolling works
-		            // properly after de-stacking a modal.
-		            setTimeout(function() {
-		                $(document.body).addClass('modal-open');
-		            }, 0);
-		        }
-		    }
-		}, '.modal');
-		
+		$(document).on(
+				{
+					'show.bs.modal' : function() {
+						var zIndex = 10000 + (10 * $('.modal:visible').length);
+						$(this).css('z-index', zIndex);
+						setTimeout(function() {
+							$('.modal-backdrop').not('.modal-stack').css(
+									'z-index', zIndex - 1).addClass(
+									'modal-stack');
+						}, 0);
+					},
+					'hidden.bs.modal' : function() {
+						if ($('.modal:visible').length > 0) {
+							// restore the modal-open class to the body element,
+							// so that scrolling works
+							// properly after de-stacking a modal.
+							setTimeout(function() {
+								$(document.body).addClass('modal-open');
+							}, 0);
+						}
+					}
+				}, '.modal');
+
 		// 自动绑定字典数据
 		var codemaps = [];
 		$(".page-content [data-codemap]").each(function() {
@@ -62,7 +66,7 @@ var App = function() {
 			if ($.inArray(codemap, codemaps) == -1)
 				codemaps.push(codemap);
 		});
-		
+
 		Helper.initCodeMap(codemaps);
 	};
 
@@ -80,6 +84,38 @@ var App = function() {
 				$(this).addClass('active open');
 			});
 		}
+	};
+
+	var handleControlInit = function() {
+		$(".page-content [data-type]").each(
+				function() {
+					var dataType = $(this).attr("data-type");
+					var dataName = $(this).attr("data-name");
+					var dataAjax = $(this).attr("data-ajax");
+					var multiple = $(this).attr("data-multiple") == 'true';
+					var required = $(this).attr("data-required") == 'true';
+					if (dataType == 'checkbox') {
+						// checkbox
+						Helper.initCheckboxData($(this), dataName, dataAjax, {
+							type : multiple ? 'checkbox' : 'radio',
+							required : required ? "required" : ''
+						});
+					} else if (dataType == 'checktree') {
+						// tree
+						$(this).before(
+								'<input type="hidden" name="' + dataName
+										+ '" />');
+						var tree = Helper.initCheckboxTreeData($(this),
+								dataAjax, multiple);
+						var that = this;
+						tree.on('changed.jstree', function(e, data) {
+							var selectedIds = $(this).jstree("get_selected",
+									false);
+							$(that).prev().val(
+									selectedIds.join(","));
+						});
+					}
+				});
 	};
 
 	var handlePasswordUpdate = function() {
@@ -100,6 +136,7 @@ var App = function() {
 		init : function() {
 			handleGlobalInit();// 全局设置
 			handleMenuInit();// 菜单设置
+			handleControlInit();// 控件初始化
 			handlePasswordUpdate();// 密码修改
 			handleUserInfoUpdate();// 用户信息修改
 		}

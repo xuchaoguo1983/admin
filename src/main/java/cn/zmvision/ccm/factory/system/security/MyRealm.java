@@ -46,7 +46,7 @@ public class MyRealm extends AuthorizingRealm {
 			AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 
-		User user = userService.getByUserName(token.getUsername());
+		User user = userService.queryUserByName(token.getUsername());
 		if (user == null)
 			throw new UnknownAccountException();
 		if (!user.getPassword().equals(new String(token.getPassword())))
