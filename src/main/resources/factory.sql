@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.25)
 # Database: factory
-# Generation Time: 2015-12-17 09:21:40 +0000
+# Generation Time: 2015-12-20 08:35:11 +0000
 # ************************************************************
 
 
@@ -18,6 +18,21 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table data_area
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `data_area`;
+
+CREATE TABLE `data_area` (
+  `id` int(11) NOT NULL COMMENT '标示ID',
+  `code` varchar(32) NOT NULL DEFAULT '' COMMENT '区域编码',
+  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '区域名称',
+  `pid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与角色关联表';
+
 
 
 # Dump of table sys_codeitem
@@ -34,6 +49,17 @@ CREATE TABLE `sys_codeitem` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据字典详表';
 
+LOCK TABLES `sys_codeitem` WRITE;
+/*!40000 ALTER TABLE `sys_codeitem` DISABLE KEYS */;
+
+INSERT INTO `sys_codeitem` (`id`, `code`, `codemap`, `name`, `sort`)
+VALUES
+	(1,'1','ENTITY_STATUS','启用',1),
+	(2,'0','ENTITY_STATUS','停用',2),
+	(3,'0','USER_TYPE','管理员',1);
+
+/*!40000 ALTER TABLE `sys_codeitem` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table sys_codemap
@@ -42,11 +68,21 @@ CREATE TABLE `sys_codeitem` (
 DROP TABLE IF EXISTS `sys_codemap`;
 
 CREATE TABLE `sys_codemap` (
-  `code` varchar(32) NOT NULL DEFAULT '',
+  `id` varchar(32) NOT NULL DEFAULT '',
   `name` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`code`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据字典表';
 
+LOCK TABLES `sys_codemap` WRITE;
+/*!40000 ALTER TABLE `sys_codemap` DISABLE KEYS */;
+
+INSERT INTO `sys_codemap` (`id`, `name`)
+VALUES
+	('ENTITY_STATUS','实体状态'),
+	('USER_TYPE','用户类型');
+
+/*!40000 ALTER TABLE `sys_codemap` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table sys_menu
@@ -65,6 +101,22 @@ CREATE TABLE `sys_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='功能菜单表';
 
+LOCK TABLES `sys_menu` WRITE;
+/*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
+
+INSERT INTO `sys_menu` (`id`, `name`, `description`, `url`, `pid`, `level`, `icon`)
+VALUES
+	('10','首页','','main','#',NULL,'icon-home'),
+	('20','基础数据管理','','','#',NULL,'icon-folder-alt'),
+	('2001','区域管理','','data/area','20',NULL,'icon-directions'),
+	('99','系统管理',NULL,NULL,'#',1,'icon-settings'),
+	('9901','菜单管理',NULL,'system/menu','99',2,'icon-menu'),
+	('9902','用户管理','','system/user','99',NULL,'icon-people'),
+	('9903','角色管理','','system/role','99',NULL,'icon-user'),
+	('9904','字典管理','','system/dict/map','99',NULL,'icon-book-open');
+
+/*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table sys_role
@@ -80,6 +132,15 @@ CREATE TABLE `sys_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
+LOCK TABLES `sys_role` WRITE;
+/*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
+
+INSERT INTO `sys_role` (`id`, `name`, `status`, `description`)
+VALUES
+	(1,'系统管理员','1','系统超级管理员');
+
+/*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table sys_role_menu
@@ -93,6 +154,20 @@ CREATE TABLE `sys_role_menu` (
   PRIMARY KEY (`role_id`,`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色菜单关联表';
 
+LOCK TABLES `sys_role_menu` WRITE;
+/*!40000 ALTER TABLE `sys_role_menu` DISABLE KEYS */;
+
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`)
+VALUES
+	(1,'10'),
+	(1,'2001'),
+	(1,'9901'),
+	(1,'9902'),
+	(1,'9903'),
+	(1,'9904');
+
+/*!40000 ALTER TABLE `sys_role_menu` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table sys_user
@@ -115,6 +190,15 @@ CREATE TABLE `sys_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
+LOCK TABLES `sys_user` WRITE;
+/*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
+
+INSERT INTO `sys_user` (`id`, `name`, `type`, `username`, `password`, `contact`, `email`, `description`, `extrainfo`, `status`, `createtime`)
+VALUES
+	(1,'管理员','0','admin','96e79218965eb72c92a549dd5a330112','','','',NULL,'1','2015-12-17 00:00:00');
+
+/*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table sys_user_role
@@ -128,6 +212,15 @@ CREATE TABLE `sys_user_role` (
   PRIMARY KEY (`user_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与角色关联表';
 
+LOCK TABLES `sys_user_role` WRITE;
+/*!40000 ALTER TABLE `sys_user_role` DISABLE KEYS */;
+
+INSERT INTO `sys_user_role` (`user_id`, `role_id`)
+VALUES
+	(1,1);
+
+/*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
@@ -137,35 +230,3 @@ CREATE TABLE `sys_user_role` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-INSERT INTO `sys_menu` (`id`, `name`, `description`, `url`, `pid`, `level`, `icon`)
-VALUES
-	('10', '首页', '', 'main', '#', NULL, 'icon-home'),
-	('99', '系统管理', NULL, NULL, '#', 1, 'icon-settings'),
-	('9901', '菜单管理', NULL, 'system/menu', '99', 2, 'icon-menu'),
-	('9902', '用户管理', '', 'system/user', '99', NULL, 'icon-people'),
-	('9903', '角色管理', '', 'system/role', '99', NULL, 'icon-user'),
-	('9904', '字典管理', '', 'system/dict', '99', NULL, 'icon-book-open');
-
-INSERT INTO `sys_user` (`id`, `name`, `type`, `username`, `password`, `contact`, `email`, `description`, `extrainfo`, `status`, `createtime`)
-VALUES
-	(1, '管理员', '0', 'admin', '96e79218965eb72c92a549dd5a330112', '', '', '', NULL, '1', '2015-12-17 00:00:00');
-
-INSERT INTO `sys_role` (`id`, `name`, `status`, `description`)
-VALUES
-	(1, '系统管理员', '1', '系统管理员');
-	
-INSERT INTO `sys_user_role` (`user_id`, `role_id`)
-VALUES
-	(1, 1);
-
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`)
-VALUES
-	(1, '10'),
-	(1, '99'),
-	(1, '9901'),
-	(1, '9902'),
-	(1, '9903'),
-	(1, '9904');
-
-
