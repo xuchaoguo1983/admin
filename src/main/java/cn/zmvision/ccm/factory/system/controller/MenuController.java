@@ -30,7 +30,7 @@ public class MenuController extends BaseController<MenuQueryInput, Menu> {
 
 	@Override
 	public PageResult queryByPage(MenuQueryInput input) {
-		PageList<Menu> list = menuService.queryMenuListByPage(
+		PageList<Menu> list = menuService.queryByPage(
 				input.getExample(), input.getPageBounds());
 
 		return new PageResult(input, list);
@@ -46,7 +46,7 @@ public class MenuController extends BaseController<MenuQueryInput, Menu> {
 	@RequestMapping(value = "/query")
 	@ResponseBody
 	public JsonResult query2(String id) {
-		return new JsonResult(menuService.queryMenuById(id));
+		return new JsonResult(menuService.queryById(id));
 	}
 
 	@Override
@@ -57,11 +57,11 @@ public class MenuController extends BaseController<MenuQueryInput, Menu> {
 		}
 
 		if (!menu.getPid().equals("#")
-				&& menuService.queryMenuById(menu.getPid()) == null) {
+				&& menuService.queryById(menu.getPid()) == null) {
 			return new JsonResult(Message.MENU_PARENT_NOT_EXIST);
 		}
 
-		return new JsonResult(menuService.saveMenu(menu));
+		return new JsonResult(menuService.save(menu));
 	}
 
 	@RequestMapping(value = "/delete/dummy")
@@ -75,7 +75,7 @@ public class MenuController extends BaseController<MenuQueryInput, Menu> {
 	@ResponseBody
 	public JsonResult delete2(String id) {
 		// id类型不同，因此单独写了一个方法
-		return new JsonResult(menuService.deleteMenuById(id));
+		return new JsonResult(menuService.deleteById(id));
 	}
 
 	@RequestMapping(value = "/tree")
@@ -83,7 +83,7 @@ public class MenuController extends BaseController<MenuQueryInput, Menu> {
 	public List<JsTreeElement> tree(
 			@RequestParam(value = "id", defaultValue = "#") String id) {
 		List<JsTreeElement> tree = new ArrayList<JsTreeElement>();
-		List<Menu> menuList = menuService.queryMenuListByExample(null);
+		List<Menu> menuList = menuService.queryAllByExample(null);
 		if (menuList != null && menuList.size() > 0) {
 			for (Menu menu : menuList) {
 				JsTreeElement node = new JsTreeElement();

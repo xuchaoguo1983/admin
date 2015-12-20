@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import cn.zmvision.ccm.factory.base.BaseService;
 import cn.zmvision.ccm.factory.system.dao.mapping.MenuMapper;
 import cn.zmvision.ccm.factory.system.dao.mapping.RoleMenuMapper;
 import cn.zmvision.ccm.factory.system.dao.mapping.UserRoleMapper;
@@ -27,7 +28,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
  * 
  */
 @Service
-public class MenuService {
+public class MenuService extends BaseService<Menu, MenuExample> {
 	@Resource
 	MenuMapper menuMapper;
 	@Resource
@@ -41,7 +42,7 @@ public class MenuService {
 	 * @param roleId
 	 * @return
 	 */
-	public List<Menu> getMenuListByRoleId(Integer roleId) {
+	public List<Menu> queryAllByRoleId(Integer roleId) {
 		RoleMenuExample example = new RoleMenuExample();
 		example.createCriteria().andRoleIdEqualTo(roleId);
 
@@ -65,7 +66,7 @@ public class MenuService {
 	 * @param userId
 	 * @return
 	 */
-	public List<Menu> getMenuListByUserId(Integer userId) {
+	public List<Menu> queryAllByUserId(Integer userId) {
 		UserRoleExample example = new UserRoleExample();
 		example.createCriteria().andUserIdEqualTo(userId);
 
@@ -117,51 +118,38 @@ public class MenuService {
 		return false;
 	}
 
-	/**
-	 * 不分页查询菜单列表
-	 * 
-	 * @param example
-	 * @return
-	 */
-	public List<Menu> queryMenuListByExample(MenuExample example) {
+	@Override
+	public List<Menu> queryAllByExample(MenuExample example) {
 		return menuMapper.selectByExample(example);
 	}
 
-	/**
-	 * 分页查询菜单记录
-	 * 
-	 * @param example
-	 * @param pageBounds
-	 * @return
-	 */
-	public PageList<Menu> queryMenuListByPage(MenuExample example,
-			PageBounds pageBounds) {
+	@Override
+	public PageList<Menu> queryByPage(MenuExample example, PageBounds pageBounds) {
 		return menuMapper.selectByExample(example, pageBounds);
 	}
 
-	public Menu queryMenuById(String id) {
+	public Menu queryById(String id) {
 		return menuMapper.selectByPrimaryKey(id);
 	}
 
-	/**
-	 * 保存菜单
-	 * 
-	 * @param record
-	 * @return
-	 */
-	public boolean saveMenu(Menu record) {
-		if (menuMapper.selectByPrimaryKey(record.getId()) != null)
+	@Override
+	public boolean save(Menu record) {
+		if (this.queryById(record.getId()) != null)
 			return menuMapper.updateByPrimaryKey(record) > 0;
 		return menuMapper.insert(record) > 0;
 	}
 
-	/**
-	 * 删除菜单
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public boolean deleteMenuById(String id) {
+	public boolean deleteById(String id) {
 		return menuMapper.deleteByPrimaryKey(id) > 0;
+	}
+
+	@Override
+	public Menu queryById(Integer id) {
+		throw new RuntimeException("not supported.");
+	}
+
+	@Override
+	public boolean deleteById(Integer id) {
+		throw new RuntimeException("not supported.");
 	}
 }

@@ -17,7 +17,7 @@ import cn.zmvision.ccm.factory.system.dao.model.CodeItem;
 import cn.zmvision.ccm.factory.system.dao.model.CodeItemExample;
 import cn.zmvision.ccm.factory.system.dao.model.CodeItemExample.Criteria;
 import cn.zmvision.ccm.factory.system.domain.query.CodeItemQueryInput;
-import cn.zmvision.ccm.factory.system.service.CodeDictService;
+import cn.zmvision.ccm.factory.system.service.CodeItemService;
 
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
@@ -29,11 +29,11 @@ public class CodeItemController extends
 		BaseController<CodeItemQueryInput, CodeItem> {
 
 	@Resource
-	CodeDictService codeDictService;
+	CodeItemService codeItemService;
 
 	@Override
 	public PageResult queryByPage(CodeItemQueryInput input) {
-		PageList<CodeItem> list = codeDictService.queryCodeItemListByPage(
+		PageList<CodeItem> list = codeItemService.queryByPage(
 				input.getExample(), input.getPageBounds());
 
 		return new PageResult(input, list);
@@ -52,17 +52,17 @@ public class CodeItemController extends
 		c.andCodemapEqualTo(record.getCodemap());
 		if (record.getId() != null)
 			c.andIdNotEqualTo(record.getId());
-		List<CodeItem> list = codeDictService.queryCodeItem(example);
+		List<CodeItem> list = codeItemService.queryAllByExample(example);
 		if (list != null && list.size() > 0) {
 			return new JsonResult(Message.DICT_CODE_DUPLICATE);
 		}
 
-		return new JsonResult(codeDictService.saveCodeItem(record));
+		return new JsonResult(codeItemService.save(record));
 	}
 
 	@Override
 	public JsonResult delete(Integer id) {
-		return new JsonResult(codeDictService.deleteCodeItemById(id));
+		return new JsonResult(codeItemService.deleteById(id));
 	}
 
 	@RequestMapping(value = "/map")
@@ -75,7 +75,6 @@ public class CodeItemController extends
 		PageBounds pageBounds = new PageBounds();
 		pageBounds.setOrders(Order.formString("codemap.asc, sort.asc"));
 
-		return new JsonResult(codeDictService.queryCodeItemListByPage(example,
-				pageBounds));
+		return new JsonResult(codeItemService.queryByPage(example, pageBounds));
 	}
 }

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import cn.zmvision.ccm.factory.Constants;
+import cn.zmvision.ccm.factory.base.BaseService;
 import cn.zmvision.ccm.factory.system.dao.mapping.RoleMapper;
 import cn.zmvision.ccm.factory.system.dao.mapping.RoleMenuMapper;
 import cn.zmvision.ccm.factory.system.dao.mapping.UserRoleMapper;
@@ -28,7 +29,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
  * 
  */
 @Service
-public class RoleService {
+public class RoleService extends BaseService<Role, RoleExample> {
 	@Resource
 	RoleMapper roleMapper;
 	@Resource
@@ -42,7 +43,7 @@ public class RoleService {
 	 * @param userId
 	 * @return
 	 */
-	public List<Role> getRoleListByUserId(Integer userId) {
+	public List<Role> queryAllByUserId(Integer userId) {
 		UserRoleExample example = new UserRoleExample();
 		example.createCriteria().andUserIdEqualTo(userId);
 
@@ -54,53 +55,77 @@ public class RoleService {
 			roleIds.add(key.getRoleId());
 
 		RoleExample example2 = new RoleExample();
-		example2.createCriteria().andStatusEqualTo(Constants.CODE_ENTITY_ACTIVE)
+		example2.createCriteria()
+				.andStatusEqualTo(Constants.CODE_ENTITY_ACTIVE)
 				.andIdIn(roleIds);
 
 		return roleMapper.selectByExample(example2);
 	}
 
-	public PageList<Role> queryRoleListByPage(RoleExample example,
-			PageBounds pageBounds) {
+	@Override
+	public PageList<Role> queryByPage(RoleExample example, PageBounds pageBounds) {
 		return roleMapper.selectByExample(example, pageBounds);
 	}
 
-	public List<RoleMenuKey> getMenuListByRoleId(Integer id) {
+	@Override
+	public List<Role> queryAllByExample(RoleExample example) {
+		return roleMapper.selectByExample(example);
+	}
+
+	/**
+	 * 查询关联角色的菜单
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<RoleMenuKey> queryAllMenuKeyById(Integer id) {
 		RoleMenuExample example = new RoleMenuExample();
 		example.createCriteria().andRoleIdEqualTo(id);
 		return roleMenuMapper.selectByExample(example);
 	}
 
-	public Role queryRoleById(Integer id) {
+	@Override
+	public Role queryById(Integer id) {
 		return roleMapper.selectByPrimaryKey(id);
 	}
 
-	public boolean saveRole(Role record, List<String> menuIds) {
-		boolean result = false;
-		if (record.getId() == null)
-			result = roleMapper.insert(record) > 0;
+	@Override
+	public boolean save(Role model) {
+		if (model.getId() == null)
+			return roleMapper.insert(model) > 0;
 		else
-			result = roleMapper.updateByPrimaryKey(record) > 0;
-		if (result && menuIds != null) {
+			return roleMapper.updateByPrimaryKey(model) > 0;
+	}
+
+	/**
+	 * 保存角色和相关联的菜单
+	 * 
+	 * @param model
+	 * @param menuIds
+	 * @return
+	 */
+	public boolean save(Role model, List<String> menuIds) {
+		if (this.save(model) && menuIds != null) {
 			// 先删除再重建
 			RoleMenuExample example = new RoleMenuExample();
-			example.createCriteria().andRoleIdEqualTo(record.getId());
+			example.createCriteria().andRoleIdEqualTo(model.getId());
 			roleMenuMapper.deleteByExample(example);
 
 			if (menuIds.size() > 0) {
 				for (String menuId : menuIds) {
 					RoleMenuKey key = new RoleMenuKey();
 					key.setMenuId(menuId);
-					key.setRoleId(record.getId());
+					key.setRoleId(model.getId());
 					roleMenuMapper.insert(key);
 				}
 			}
 		}
 
-		return result;
+		return true;
 	}
 
-	public boolean deleteRoleById(Integer id) {
+	@Override
+	public boolean deleteById(Integer id) {
 		if (roleMapper.deleteByPrimaryKey(id) > 0) {
 			RoleMenuExample example = new RoleMenuExample();
 			example.createCriteria().andRoleIdEqualTo(id);
@@ -110,4 +135,5 @@ public class RoleService {
 
 		return false;
 	}
+
 }

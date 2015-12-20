@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import cn.zmvision.ccm.factory.base.BaseService;
 import cn.zmvision.ccm.factory.base.util.DateUtil;
 import cn.zmvision.ccm.factory.system.dao.mapping.UserMapper;
 import cn.zmvision.ccm.factory.system.dao.mapping.UserRoleMapper;
@@ -24,7 +25,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
  * 
  */
 @Service
-public class UserService {
+public class UserService extends BaseService<User, UserExample> {
 	@Resource
 	UserMapper userMapper;
 	@Resource
@@ -36,7 +37,7 @@ public class UserService {
 	 * @param userName
 	 * @return
 	 */
-	public User queryUserByName(String userName) {
+	public User queryByName(String userName) {
 		UserExample example = new UserExample();
 		example.createCriteria().andUsernameEqualTo(userName);
 
@@ -46,73 +47,77 @@ public class UserService {
 		else
 			return null;
 	}
-	
+
 	/**
-	 * 根据ID查询用户信息
+	 * 查询关联用户的角色列表
+	 * 
 	 * @param id
 	 * @return
 	 */
-	public User queryUserById(Integer id) {
+	public List<UserRoleKey> queryRoleKeyById(Integer id) {
+		UserRoleExample example = new UserRoleExample();
+		example.createCriteria().andUserIdEqualTo(id);
+
+		return userRoleMapper.selectByExample(example);
+	}
+
+	@Override
+	public PageList<User> queryByPage(UserExample example, PageBounds pageBounds) {
+		return userMapper.selectByExample(example, pageBounds);
+	}
+
+	@Override
+	public List<User> queryAllByExample(UserExample example) {
+		return userMapper.selectByExample(example);
+	}
+
+	@Override
+	public User queryById(Integer id) {
 		return userMapper.selectByPrimaryKey(id);
 	}
 
-	/**
-	 * 分页查询用户列表
-	 * 
-	 * @param example
-	 * @param pageBounds
-	 * @return
-	 */
-	public PageList<User> queryUserListByPage(UserExample example,
-			PageBounds pageBounds) {
-		return userMapper.selectByExample(example, pageBounds);
+	@Override
+	public boolean save(User model) {
+		if (model.getId() != null) {
+			return userMapper.updateByPrimaryKeySelective(model) > 0;
+		} else {
+			model.setCreatetime(DateUtil.getNow());
+			// default password is 111111, save as MD5
+			model.setPassword("96e79218965eb72c92a549dd5a330112");
+			return userMapper.insert(model) > 0;
+		}
 	}
 
 	/**
 	 * 保存用户和关联角色信息
 	 * 
-	 * @param user
+	 * @param model
 	 * @param roleIds
 	 * @return
 	 */
-	public boolean saveUser(User user, List<Integer> roleIds) {
-		boolean result = false;
-		if (user.getId() != null) {
-			result = userMapper.updateByPrimaryKeySelective(user) > 0;
-		} else {
-			user.setCreatetime(DateUtil.getNow());
-			// default password is 111111, save as MD5
-			user.setPassword("96e79218965eb72c92a549dd5a330112");
-			result = userMapper.insert(user) > 0;
-		}
-
-		if (result && roleIds != null) {
+	public boolean save(User model, List<Integer> roleIds) {
+		if (this.save(model) && roleIds != null) {
 			// 删除后重建
 			UserRoleExample example = new UserRoleExample();
-			example.createCriteria().andUserIdEqualTo(user.getId());
+			example.createCriteria().andUserIdEqualTo(model.getId());
 			userRoleMapper.deleteByExample(example);
 
 			if (roleIds.size() > 0) {
 				for (Integer roleId : roleIds) {
 					UserRoleKey key = new UserRoleKey();
 					key.setRoleId(roleId);
-					key.setUserId(user.getId());
+					key.setUserId(model.getId());
 
 					userRoleMapper.insert(key);
 				}
 			}
 		}
 
-		return result;
+		return true;
 	}
 
-	/**
-	 * 删除用户和关联的角色信息
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public boolean deleteUserById(Integer id) {
+	@Override
+	public boolean deleteById(Integer id) {
 		if (userMapper.deleteByPrimaryKey(id) > 0) {
 			UserRoleExample example = new UserRoleExample();
 			example.createCriteria().andUserIdEqualTo(id);
@@ -124,16 +129,4 @@ public class UserService {
 		return false;
 	}
 
-	/**
-	 * 查询关联用户的角色列表
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public List<UserRoleKey> queryUserRoleListById(Integer id) {
-		UserRoleExample example = new UserRoleExample();
-		example.createCriteria().andUserIdEqualTo(id);
-
-		return userRoleMapper.selectByExample(example);
-	}
 }

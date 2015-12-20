@@ -34,7 +34,7 @@ public class MainController extends DummyController {
 			return new JsonResult(Message.DATA_ERROR);
 
 		user.setPassword(newpassword);
-		userService.saveUser(user, null);
+		userService.save(user, null);
 
 		return new JsonResult();
 	}

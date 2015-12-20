@@ -30,7 +30,7 @@ public class RoleController extends BaseController<RoleQueryInput, RoleModel> {
 	@Override
 	public PageResult queryByPage(RoleQueryInput input) {
 		PageBounds pageBounds = input.getPageBounds();
-		PageList<Role> list = roleService.queryRoleListByPage(
+		PageList<Role> list = roleService.queryByPage(
 				input.getExample(), pageBounds);
 
 		return new PageResult(input, list);
@@ -38,22 +38,22 @@ public class RoleController extends BaseController<RoleQueryInput, RoleModel> {
 
 	@Override
 	public JsonResult save(RoleModel model) {
-		return new JsonResult(roleService.saveRole(model, model.getMenuId()));
+		return new JsonResult(roleService.save(model, model.getMenuId()));
 	}
 
 	public JsonResult delete(Integer id) {
-		return new JsonResult(roleService.deleteRoleById(id));
+		return new JsonResult(roleService.deleteById(id));
 	}
 
 	@Override
 	public JsonResult query(Integer id) {
-		Role role = roleService.queryRoleById(id);
+		Role role = roleService.queryById(id);
 		if (role == null)
 			return new JsonResult(Message.DATA_ERROR);
 
 		RoleModel model = new RoleModel(role);
 
-		List<RoleMenuKey> list = roleService.getMenuListByRoleId(id);
+		List<RoleMenuKey> list = roleService.queryAllMenuKeyById(id);
 		List<String> menuList = new ArrayList<String>();
 		if (list != null && list.size() > 0) {
 			for (RoleMenuKey key : list)

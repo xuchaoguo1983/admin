@@ -11,15 +11,16 @@ import cn.zmvision.ccm.factory.base.bo.JsonResult;
 import cn.zmvision.ccm.factory.base.bo.PageResult;
 import cn.zmvision.ccm.factory.system.dao.model.CodeMap;
 import cn.zmvision.ccm.factory.system.domain.query.CodeMapQueryInput;
-import cn.zmvision.ccm.factory.system.service.CodeDictService;
+import cn.zmvision.ccm.factory.system.service.CodeMapService;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 @Controller
 @RequestMapping("system/dict/map")
-public class CodeMapController extends BaseController<CodeMapQueryInput, CodeMap> {
+public class CodeMapController extends
+		BaseController<CodeMapQueryInput, CodeMap> {
 	@Resource
-	CodeDictService codeDictService;
+	CodeMapService codeMapService;
 
 	@Override
 	public String index() {
@@ -28,8 +29,8 @@ public class CodeMapController extends BaseController<CodeMapQueryInput, CodeMap
 
 	@Override
 	public PageResult queryByPage(CodeMapQueryInput input) {
-		PageList<CodeMap> list = codeDictService.queryCodeMapListByPage(
-				input.getExample(), input.getPageBounds());
+		PageList<CodeMap> list = codeMapService.queryByPage(input.getExample(),
+				input.getPageBounds());
 
 		return new PageResult(input, list);
 	}
@@ -41,7 +42,7 @@ public class CodeMapController extends BaseController<CodeMapQueryInput, CodeMap
 
 	@Override
 	public JsonResult save(CodeMap record) {
-		return new JsonResult(codeDictService.saveCodeMap(record));
+		return new JsonResult(codeMapService.save(record));
 	}
 
 	@RequestMapping(value = "/delete/dummy")
@@ -54,7 +55,7 @@ public class CodeMapController extends BaseController<CodeMapQueryInput, CodeMap
 	@RequestMapping(value = "/delete")
 	@ResponseBody
 	public JsonResult delete2(String id) {
-		return new JsonResult(codeDictService.deleteCodeMapById(id));
+		return new JsonResult(codeMapService.deleteById(id));
 	}
 
 }

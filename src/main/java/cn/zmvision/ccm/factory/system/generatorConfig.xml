@@ -25,28 +25,43 @@
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 		<!-- 生成模型的包名和位置 -->
-		<javaModelGenerator targetPackage="cn.zmvision.ccm.factory.basedata.dao.model"
+		<javaModelGenerator targetPackage="cn.zmvision.ccm.factory.system.dao.model"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		<!-- 生成映射文件的包名和位置 -->
-		<sqlMapGenerator targetPackage="cn.zmvision.ccm.factory.basedata.dao.mapping"
+		<sqlMapGenerator targetPackage="cn.zmvision.ccm.factory.system.dao.mapping"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 		<!-- 生成DAO的包名和位置 -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="cn.zmvision.ccm.factory.basedata.dao.mapping"
+			targetPackage="cn.zmvision.ccm.factory.system.dao.mapping"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
 		<!-- 要生成的表 tableName是数据库中的表名 -->
 
-		<table tableName="bs_area" domainObjectName="Area">
+		<table tableName="sys_user" domainObjectName="User">
 			<generatedKey column="id" sqlStatement="JDBC" identity="true"></generatedKey>
-		</table>		
+			<columnOverride column="createtime" javaType="String"></columnOverride>
+		</table>
+		<table tableName="sys_codeitem" domainObjectName="CodeItem">
+		</table>
+		<table tableName="sys_codemap" domainObjectName="CodeMap">
+		</table>
+		<table tableName="sys_menu" domainObjectName="Menu">
+		</table>
+		<table tableName="sys_role" domainObjectName="Role">
+			<generatedKey column="id" sqlStatement="JDBC" identity="true"></generatedKey>
+		</table>
+		<table tableName="sys_role_menu" domainObjectName="RoleMenu">
+		</table>
+		<table tableName="sys_user_role" domainObjectName="UserRole">
+		</table>
+
 
 	</context>
 </generatorConfiguration>  

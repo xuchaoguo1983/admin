@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -35,8 +36,11 @@ public class LogAspect {
 		// 获取请求地址
 		String requestPath = request.getRequestURI();
 
-		logger.info("[{}] {}, request:{}", sdf.format(startTimeMillis),
-				requestPath, mapper.writeValueAsString(inputParamMap));
+		Object principal = SecurityUtils.getSubject().getPrincipal();
+
+		logger.info("[{}] {}, principal:{}, request:{}",
+				sdf.format(startTimeMillis), requestPath, principal,
+				mapper.writeValueAsString(inputParamMap));
 
 		return pjp.proceed();
 	}

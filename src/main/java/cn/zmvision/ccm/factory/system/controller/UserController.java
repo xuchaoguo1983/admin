@@ -30,7 +30,7 @@ public class UserController extends BaseController<UserQueryInput, UserModel> {
 	@Override
 	public PageResult queryByPage(UserQueryInput input) {
 		PageBounds pageBounds = input.getPageBounds();
-		PageList<User> list = userService.queryUserListByPage(
+		PageList<User> list = userService.queryByPage(
 				input.getExample(), pageBounds);
 
 		return new PageResult(input, list);
@@ -38,13 +38,13 @@ public class UserController extends BaseController<UserQueryInput, UserModel> {
 
 	@Override
 	public JsonResult query(Integer id) {
-		User user = userService.queryUserById(id);
+		User user = userService.queryById(id);
 		if (user == null)
 			return new JsonResult(Message.DATA_ERROR);
 
 		UserModel model = new UserModel(user);
 
-		List<UserRoleKey> list = userService.queryUserRoleListById(id);
+		List<UserRoleKey> list = userService.queryRoleKeyById(id);
 		List<Integer> roleList = new ArrayList<Integer>();
 		if (list != null && list.size() > 0) {
 			for (UserRoleKey key : list)
@@ -58,12 +58,12 @@ public class UserController extends BaseController<UserQueryInput, UserModel> {
 
 	@Override
 	public JsonResult save(UserModel record) {
-		return new JsonResult(userService.saveUser(record, record.getRoleId()));
+		return new JsonResult(userService.save(record, record.getRoleId()));
 	}
 
 	@Override
 	public JsonResult delete(Integer id) {
-		return new JsonResult(userService.deleteUserById(id));
+		return new JsonResult(userService.deleteById(id));
 	}
 
 }

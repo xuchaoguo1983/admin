@@ -39,7 +39,7 @@ public class RememberAuthenticationFilter extends FormAuthenticationFilter {
 			if (user == null) {
 				String userName = subject.getPrincipal().toString();
 
-				user = userService.queryUserByName(userName);
+				user = userService.queryByName(userName);
 				if (user == null) {
 					logger.warn("user doesn't exist: {}", userName);
 					return false;
@@ -49,7 +49,7 @@ public class RememberAuthenticationFilter extends FormAuthenticationFilter {
 			}
 			// 初始化菜单
 			if (SessionUtil.getMenu() == null) {
-				List<Menu> menuList = menuService.getMenuListByUserId(user
+				List<Menu> menuList = menuService.queryAllByUserId(user
 						.getId());
 
 				SessionUtil.setMenu(MenuBuilder.build(menuList));
